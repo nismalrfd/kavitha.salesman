@@ -1,0 +1,1730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased}
+:root{
+  --g:#C9A84C;--g2:#E8C97A;--g3:#F0DC9A;
+  --cream:#FDFAF3;--ivory:#F7F0E0;
+  --dark:#1A100A;--mid:#3C2415;--text:#2C1A10;--muted:#8B7355;
+  --border:rgba(201,168,76,0.18);
+  --dmd:#6B7FD4;--dmd-l:rgba(107,127,212,0.09);--dmd-b:rgba(107,127,212,0.25);
+  --cs:#2E8B57;--cs-l:rgba(46,139,87,0.08);--cs-b:rgba(46,139,87,0.22);
+  --red:#991B1B;--red-l:rgba(153,27,27,0.08);--red-b:#FECACA;
+  --green:#166534;--green-l:#F0FDF4;--green-b:#BBF7D0;
+  --font-d:'Syne',sans-serif;--font-b:'DM Sans',sans-serif;--font-m:'DM Mono',monospace;
+}
+body{background:#111;display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:20px 0 40px;font-family:var(--font-b);color:var(--text)}
+.phone{width:390px;min-height:844px;background:var(--cream);border-radius:50px;position:relative;box-shadow:0 0 0 1px rgba(201,168,76,0.25),0 0 0 3px rgba(201,168,76,0.08),0 50px 140px rgba(0,0,0,0.85);overflow:hidden;display:flex;flex-direction:column;flex-shrink:0}
+.notch{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:120px;height:34px;background:#0a0a0a;border-radius:20px;z-index:300;display:flex;align-items:center;justify-content:center;gap:7px}
+.notch-cam{width:9px;height:9px;border-radius:50%;background:#1a1a1a;border:1.5px solid #2a2a2a;box-shadow:inset 0 0 3px #000}
+.sbar{height:52px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 24px 10px;z-index:100;flex-shrink:0}
+.sbar-time{font-size:14px;font-weight:600;color:var(--text);font-family:var(--font-m);letter-spacing:0.5px}
+.sbar-icons{display:flex;align-items:center;gap:5px}
+/* Pages */
+.pages{flex:1;overflow:hidden;position:relative;display:flex;flex-direction:column}
+.page{position:absolute;inset:0;overflow-y:auto;display:none;flex-direction:column;background:var(--cream);scrollbar-width:none;padding-bottom:90px}
+.page::-webkit-scrollbar{display:none}
+.page.active{display:flex}
+.page-full{padding-bottom:0}
+/* Tab bar */
+.tabbar{height:82px;background:rgba(253,250,243,0.97);border-top:0.5px solid var(--border);display:flex;padding-bottom:20px;z-index:200;flex-shrink:0;backdrop-filter:blur(12px)}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;padding-top:10px;transition:all .2s}
+.tab i{font-size:21px;color:var(--muted);transition:all .2s}
+.tab.active i{color:var(--g);transform:scale(1.1)}
+.tab-lbl{font-size:9px;font-weight:600;color:var(--muted);letter-spacing:0.8px;text-transform:uppercase;font-family:var(--font-b);transition:color .2s}
+.tab.active .tab-lbl{color:var(--g)}
+/* Header */
+.phdr{padding:10px 20px 12px;display:flex;justify-content:space-between;align-items:center;background:var(--cream);border-bottom:0.5px solid var(--border);position:sticky;top:0;z-index:50}
+.ptitle{font-family:var(--font-d);font-size:24px;font-weight:700;color:var(--dark);letter-spacing:-0.5px}
+.psub{font-size:9px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:2px}
+/* Buttons */
+.gold-btn{width:100%;background:linear-gradient(135deg,#B8860B,#D4A41F,#C9A84C);color:#1A100A;border:none;border-radius:14px;font-weight:700;font-family:var(--font-b);cursor:pointer;font-size:14px;padding:15px;letter-spacing:0.2px;box-shadow:0 4px 20px rgba(184,134,11,0.3);transition:all .15s}
+.gold-btn:active{transform:scale(0.97)}
+.ghost-btn{width:100%;background:transparent;color:var(--text);border:1px solid var(--border);border-radius:14px;font-weight:600;font-family:var(--font-b);cursor:pointer;font-size:14px;padding:15px;transition:all .15s}
+.ghost-btn:active{background:rgba(201,168,76,0.08)}
+.red-btn{width:100%;background:linear-gradient(135deg,#991B1B,#DC2626);color:#fff;border:none;border-radius:14px;font-weight:700;font-family:var(--font-b);cursor:pointer;font-size:14px;padding:15px;box-shadow:0 4px 16px rgba(153,27,27,0.3);transition:all .15s}
+/* Inputs */
+.inp-lbl{font-size:9.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.9px;display:block;margin-bottom:5px;font-family:var(--font-b)}
+.ios-inp{width:100%;background:rgba(201,168,76,0.05);border:0.5px solid var(--border);border-radius:12px;padding:12px 14px;font-size:14px;color:var(--dark);font-family:var(--font-b);outline:none;transition:all .2s;appearance:none;-webkit-appearance:none}
+.ios-inp:focus{border-color:var(--g);background:rgba(201,168,76,0.08);box-shadow:0 0 0 3px rgba(201,168,76,0.1)}
+.ios-inp::placeholder{color:rgba(139,115,85,0.45)}
+.inp-grp{margin-bottom:10px}
+/* Cards */
+.card{background:#fff;border-radius:18px;border:0.5px solid var(--border);overflow:hidden}
+/* Hero */
+.hero-dark{margin:12px 16px 0;background:linear-gradient(135deg,#1A100A 0%,#2C1810 50%,#1A100A 100%);border-radius:22px;padding:22px;border:0.5px solid rgba(201,168,76,0.25);position:relative;overflow:hidden}
+.hero-dark::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;background:radial-gradient(circle,rgba(201,168,76,0.15) 0%,transparent 70%);border-radius:50%}
+.hpills{display:flex;gap:8px;margin-top:14px}
+.hpill{flex:1;background:rgba(201,168,76,0.1);border:0.5px solid rgba(201,168,76,0.2);border-radius:12px;padding:10px;text-align:center}
+.hpill-l{font-size:8px;color:rgba(240,196,64,0.55);font-weight:600;text-transform:uppercase;letter-spacing:0.8px}
+.hpill-v{font-size:17px;font-weight:700;color:#F0C040;font-family:var(--font-d);margin-top:2px}
+/* Action grid */
+.action-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 16px 0}
+.atile{background:#fff;border-radius:18px;padding:16px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;border:0.5px solid var(--border);transition:all .15s;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
+.atile:active{transform:scale(0.94);box-shadow:none}
+.atile-ico{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center}
+.atile-ico i{font-size:24px}
+.atile-name{font-size:12px;font-weight:600;color:var(--dark);text-align:center}
+/* Section labels */
+.sec-lbl{font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1.4px;padding:0 20px;margin:18px 0 10px;font-family:var(--font-b)}
+/* Badges */
+.badge{font-size:9px;font-weight:700;padding:3px 9px;border-radius:20px;letter-spacing:0.3px;display:inline-block}
+.b-green{background:#F0FDF4;color:#166534;border:0.5px solid #BBF7D0}
+.b-amber{background:#FFFBEB;color:#92400E;border:0.5px solid #FDE68A}
+.b-red{background:#FEF2F2;color:#991B1B;border:0.5px solid #FECACA}
+.b-blue{background:#EFF6FF;color:#1E40AF;border:0.5px solid #BFDBFE}
+.b-purple{background:#F5F3FF;color:#5B21B6;border:0.5px solid #C4B5FD}
+/* Progress */
+.prog-track{height:5px;background:rgba(201,168,76,0.12);border-radius:10px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--g),var(--g3));border-radius:10px;transition:width .5s ease}
+/* Step bar */
+.step-bar{display:flex;align-items:center;padding:10px 16px 6px;background:var(--cream);position:sticky;top:56px;z-index:40}
+.si{display:flex;flex-direction:column;align-items:center;gap:3px;flex:1;position:relative}
+.si:not(:last-child)::after{content:'';position:absolute;top:12px;left:50%;width:100%;height:1.5px;background:rgba(201,168,76,0.15);z-index:0}
+.si.done:not(:last-child)::after,.si.active:not(:last-child)::after{background:var(--g)}
+.si-num{width:24px;height:24px;border-radius:50%;background:rgba(201,168,76,0.1);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--muted);position:relative;z-index:1;transition:all .3s}
+.si.active .si-num{background:var(--g);border-color:var(--g);color:#1A100A}
+.si.done .si-num{background:#1A100A;border-color:var(--g);color:var(--g)}
+.si-lbl{font-size:7.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;text-align:center}
+.si.active .si-lbl{color:var(--g)}
+.si.done .si-lbl{color:var(--dark)}
+/* Step panels */
+.spanel{display:none;padding:0 16px 16px}
+.spanel.active{display:block}
+/* Sheet overlay */
+.sh-ov{position:absolute;inset:0;background:rgba(26,16,10,0.72);display:none;flex-direction:column;justify-content:flex-end;z-index:800;border-radius:50px;overflow:hidden;backdrop-filter:blur(4px)}
+.sh-ov.open{display:flex;animation:fadeUp .2s ease}
+@keyframes fadeUp{from{opacity:0}to{opacity:1}}
+.sheet{background:var(--cream);border-radius:26px 26px 0 0;padding:8px 0 34px;max-height:90%;overflow-y:auto;border-top:0.5px solid rgba(201,168,76,0.3);scrollbar-width:none;animation:slideUp .3s cubic-bezier(.25,.1,.25,1)}
+.sheet::-webkit-scrollbar{display:none}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.sh-handle{width:34px;height:3.5px;background:rgba(201,168,76,0.3);border-radius:3px;margin:0 auto 12px}
+.sh-hdr{display:flex;justify-content:space-between;align-items:center;padding:0 20px 14px}
+.sh-title{font-family:var(--font-d);font-size:22px;font-weight:700;color:var(--dark)}
+.sh-close{width:30px;height:30px;border-radius:50%;background:rgba(201,168,76,0.1);border:0.5px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted)}
+.sh-body{padding:0 20px 10px}
+/* Misc */
+.divl{height:0.5px;background:rgba(201,168,76,0.15);margin:12px 0}
+.notice-chip{background:rgba(201,168,76,0.1);border:0.5px solid rgba(201,168,76,0.25);border-radius:20px;padding:5px 12px;display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:var(--dark)}
+.toggle-row{display:flex;gap:6px}
+.radio-opt{flex:1;padding:8px;border:1px solid var(--border);border-radius:10px;text-align:center;cursor:pointer;font-size:12px;font-weight:600;color:var(--muted);background:rgba(201,168,76,0.03);transition:all .2s}
+.radio-opt.sel{background:rgba(201,168,76,0.12);border-color:var(--g);color:var(--dark)}
+.type-btn{flex:1;padding:10px;border-radius:11px;border:1px solid var(--border);background:rgba(201,168,76,0.04);cursor:pointer;font-size:12px;font-weight:600;color:var(--muted);font-family:var(--font-b);transition:all .2s}
+.type-btn.active{background:var(--g);color:#1A100A;border-color:var(--g)}
+.pill-toggle{display:flex;background:rgba(201,168,76,0.08);border:0.5px solid var(--border);border-radius:13px;padding:3px;gap:3px}
+.pill-opt{flex:1;padding:8px;border-radius:10px;text-align:center;cursor:pointer;font-size:12px;font-weight:600;color:var(--muted);transition:all .2s;border:none;background:transparent;font-family:var(--font-b)}
+.pill-opt.active{background:#fff;color:var(--dark);border:0.5px solid rgba(201,168,76,0.2)}
+/* Summary */
+.summary-dark{background:linear-gradient(135deg,#1A100A,#2C1810);border-radius:18px;padding:18px;margin-bottom:14px}
+.sr{display:flex;justify-content:space-between;align-items:center;padding:4px 0}
+.sr-l{font-size:12px;color:rgba(240,196,64,0.6);font-weight:500}
+.sr-v{font-size:13px;font-weight:600;color:#F0C040;font-family:var(--font-b)}
+.sr-div{height:0.5px;background:rgba(201,168,76,0.2);margin:8px 0}
+/* Gem sections */
+.gem-hdr{display:flex;align-items:center;justify-content:space-between;margin:14px 0 10px}
+.gem-toggle{display:flex;border-radius:20px;padding:2px;gap:2px;cursor:pointer}
+.gem-pill{padding:4px 10px;border-radius:16px;font-size:10px;font-weight:700;cursor:pointer;transition:all .2s}
+.dmd-box{background:var(--dmd-l);border:0.5px solid var(--dmd-b);border-radius:14px;padding:14px;margin-bottom:10px}
+.cs-box{background:var(--cs-l);border:0.5px solid var(--cs-b);border-radius:14px;padding:14px;margin-bottom:10px}
+.gem-val-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:0.5px solid rgba(0,0,0,0.05)}
+.gem-val-row:last-child{border:none}
+.gem-val-lbl{font-size:11px;color:var(--muted);font-weight:500}
+/* Item total box */
+.item-total-box{background:rgba(201,168,76,0.06);border:0.5px solid rgba(201,168,76,0.2);border-radius:14px;padding:14px}
+/* Estimation card */
+.est-card{background:#fff;border-radius:18px;margin:0 16px 10px;border:0.5px solid var(--border);overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,0.04)}
+.est-hdr{padding:14px 16px 10px;border-bottom:0.5px solid rgba(201,168,76,0.1)}
+.est-row{display:flex;justify-content:space-between;padding:5px 16px}
+.est-lbl{font-size:11.5px;color:var(--muted);font-weight:500}
+.est-val{font-size:12px;font-weight:600;color:var(--dark)}
+.est-total{background:linear-gradient(135deg,#1A100A,#2C1810);padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
+.est-footer{padding:10px 16px 12px;display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap;background:rgba(201,168,76,0.02)}
+.est-act{font-size:11px;font-weight:700;padding:7px 12px;border-radius:11px;cursor:pointer;border:none;font-family:var(--font-b);white-space:nowrap}
+/* Tag pills */
+.tag-pill{background:rgba(201,168,76,0.07);border:0.5px solid var(--border);border-radius:20px;padding:5px 14px;font-size:11px;font-weight:600;color:var(--dark);cursor:pointer;transition:all .2s;white-space:nowrap}
+.tag-pill.sel{background:var(--g);color:#1A100A;border-color:var(--g)}
+/* Mode card */
+.mode-card{border-radius:14px;padding:14px;cursor:pointer;border:1.5px solid var(--border);background:#fff;transition:all .2s}
+.mode-card.chosen{border-color:var(--g);background:rgba(201,168,76,0.06)}
+/* Payout tiles */
+.payout-tile{flex:1;padding:11px;border-radius:13px;border:1px solid var(--border);background:rgba(201,168,76,0.03);cursor:pointer;text-align:center;transition:all .2s}
+.payout-tile.sel{background:rgba(201,168,76,0.12);border-color:var(--g)}
+.payout-tile i{font-size:20px;color:var(--muted);display:block;margin-bottom:4px}
+.payout-tile.sel i{color:var(--g)}
+.payout-tile-lbl{font-size:10px;font-weight:600;color:var(--muted)}
+.payout-tile.sel .payout-tile-lbl{color:var(--dark)}
+/* Ledger */
+.ledger-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:0.5px solid rgba(201,168,76,0.08)}
+.ledger-row:last-child{border:none}
+/* Stock */
+.stock-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:0.5px solid rgba(201,168,76,0.08)}
+.stock-item:last-child{border:none}
+.stock-ico{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#FEF9EC,#F7EDD0);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.stock-num{font-size:22px;font-weight:700;color:var(--dark);font-family:var(--font-d);line-height:1}
+.stock-unit{font-size:9px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px}
+/* Scheme */
+.scheme-card{border-radius:18px;padding:18px;cursor:pointer;border:0.5px solid var(--border);background:#fff;transition:all .2s;margin-bottom:10px}
+.scheme-card.sel{border-color:var(--g);background:rgba(201,168,76,0.05);box-shadow:0 4px 20px rgba(201,168,76,0.15)}
+/* Profile */
+.ios-row{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;border-bottom:0.5px solid rgba(201,168,76,0.1)}
+.ios-row:last-child{border:none}
+.ios-row-icon{width:36px;height:36px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ios-row-title{font-size:14px;font-weight:500;color:var(--dark)}
+.ios-row-sub{font-size:11px;color:var(--muted);margin-top:1px}
+/* Login */
+.login-bg{position:absolute;inset:0;background:linear-gradient(160deg,#1A100A 0%,#2C1810 40%,#4A2820 70%,#1A100A 100%);z-index:0}
+.login-orb{position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(201,168,76,0.2) 0%,transparent 70%);top:-60px;right:-60px}
+.login-orb2{position:absolute;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(201,168,76,0.1) 0%,transparent 70%);bottom:100px;left:-40px}
+/* OTP inputs */
+.otp-container{display:flex;gap:10px;justify-content:center;margin:20px 0}
+.otp-inp{width:46px;height:56px;border-radius:14px;border:1.5px solid rgba(201,168,76,0.25);background:rgba(201,168,76,0.08);text-align:center;font-size:22px;font-weight:700;color:#F0C040;font-family:var(--font-d);outline:none;transition:all .2s;caret-color:var(--g)}
+.otp-inp:focus{border-color:var(--g);background:rgba(201,168,76,0.15);box-shadow:0 0 0 3px rgba(201,168,76,0.15)}
+/* Chip */
+.chip-red{background:#FEF2F2;border:0.5px solid #FECACA;border-radius:14px;padding:13px 16px;display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+.chip-green{background:#F0FDF4;border:0.5px solid #BBF7D0;border-radius:14px;padding:13px 16px;display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+/* Item list in summary */
+.summary-item-row{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:rgba(201,168,76,0.05);border:0.5px solid var(--border);border-radius:12px;margin-bottom:6px}
+/* Scheme scroll */
+.scheme-scroll{display:flex;gap:10px;overflow-x:auto;padding:0 16px;scrollbar-width:none}
+.scheme-scroll::-webkit-scrollbar{display:none}
+.scheme-tile{min-width:160px;background:linear-gradient(135deg,#1A100A,#2C1810);border-radius:16px;padding:16px;border:0.5px solid rgba(201,168,76,0.2);cursor:pointer;flex-shrink:0}
+.pb{height:20px}
+/* Notification dot */
+.notif-dot{width:7px;height:7px;border-radius:50%;background:var(--red);border:1.5px solid var(--cream);position:absolute;top:-2px;right:-2px}
+</style>
+</head>
+<body>
+<div class="phone" id="phone">
+  <div class="notch"><div class="notch-cam"></div><div style="width:5px;height:5px;border-radius:50%;background:#2a2a2a"></div></div>
+  <div class="sbar" id="sbar" style="background:transparent;position:absolute;top:0;left:0;right:0;z-index:300">
+    <div class="sbar-time" id="clock" style="color:#F0C040">9:41</div>
+    <div class="sbar-icons">
+      <i class="ti ti-wifi" style="font-size:14px;color:rgba(240,196,64,0.8)"></i>
+      <i class="ti ti-battery-2" style="font-size:14px;color:rgba(240,196,64,0.8)"></i>
+    </div>
+  </div>
+
+  <!-- ══════════ LOGIN PAGE ══════════ -->
+  <div id="p-login" style="position:absolute;inset:0;z-index:700;display:flex;flex-direction:column;background:#1A100A">
+    <div class="login-bg"></div>
+    <div class="login-orb"></div>
+    <div class="login-orb2"></div>
+    <div style="position:relative;z-index:1;flex:1;display:flex;flex-direction:column;justify-content:flex-end;padding:0 28px 40px">
+      <div style="text-align:center;margin-bottom:40px">
+        <div style="width:72px;height:72px;border-radius:22px;background:linear-gradient(135deg,#B8860B,#D4A41F);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;box-shadow:0 8px 32px rgba(184,134,11,0.4)">
+          <i class="ti ti-crown" style="font-size:32px;color:#1A100A"></i>
+        </div>
+        <div style="font-family:var(--font-d);font-size:32px;font-weight:800;color:#fff;letter-spacing:-1px;line-height:1">Royal Jewel</div>
+        <div style="font-size:12px;color:rgba(240,196,64,0.55);margin-top:5px;letter-spacing:2px;text-transform:uppercase;font-weight:600">Salesman Panel</div>
+      </div>
+
+      <!-- Phone Step -->
+      <div id="login-step-1">
+        <div style="font-size:11px;font-weight:700;color:rgba(240,196,64,0.6);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:8px">Mobile Number</div>
+        <div style="position:relative">
+          <div style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:14px;font-weight:600;color:rgba(240,196,64,0.7)">+91</div>
+          <input id="login-phone" class="ios-inp" style="padding-left:46px;background:rgba(201,168,76,0.1);border-color:rgba(201,168,76,0.25);color:#fff;font-size:16px;height:54px" placeholder="XXXXX XXXXX" maxlength="10" type="tel" oninput="checkPhone()">
+        </div>
+        <button id="login-otp-btn" class="gold-btn" style="margin-top:16px;height:52px;font-size:15px;opacity:0.5;pointer-events:none" onclick="sendOTP()">Send OTP</button>
+        <div style="text-align:center;margin-top:14px;font-size:12px;color:rgba(240,196,64,0.4)">Secure login for staff only</div>
+      </div>
+
+      <!-- OTP Step -->
+      <div id="login-step-2" style="display:none">
+        <div style="font-size:13px;color:rgba(240,196,64,0.7);margin-bottom:4px">OTP sent to <span id="otp-phone-disp" style="color:#F0C040;font-weight:600"></span></div>
+        <div style="font-size:11px;color:rgba(240,196,64,0.4);margin-bottom:16px">Enter the 4-digit code below</div>
+        <div class="otp-container">
+          <input class="otp-inp" id="otp1" maxlength="1" type="tel" oninput="otpMove(this,'otp2')">
+          <input class="otp-inp" id="otp2" maxlength="1" type="tel" oninput="otpMove(this,'otp3')" onkeydown="otpBack(event,this,'otp1')">
+          <input class="otp-inp" id="otp3" maxlength="1" type="tel" oninput="otpMove(this,'otp4')" onkeydown="otpBack(event,this,'otp2')">
+          <input class="otp-inp" id="otp4" maxlength="1" type="tel" oninput="otpVerify()" onkeydown="otpBack(event,this,'otp3')">
+        </div>
+        <div id="otp-hint" style="text-align:center;font-size:11px;color:rgba(240,196,64,0.5);margin-bottom:16px">Hint: use 1234</div>
+        <button class="gold-btn" style="height:52px;font-size:15px" onclick="verifyOTP()">Verify & Login</button>
+        <div style="text-align:center;margin-top:14px">
+          <span style="font-size:12px;color:rgba(240,196,64,0.4)">Didn't receive? </span>
+          <span style="font-size:12px;color:var(--g);font-weight:600;cursor:pointer" onclick="resendOTP()">Resend</span>
+        </div>
+        <div onclick="document.getElementById('login-step-1').style.display='block';document.getElementById('login-step-2').style.display='none'" style="text-align:center;margin-top:10px;font-size:12px;color:rgba(240,196,64,0.4);cursor:pointer">← Change number</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ PAGES ══════════ -->
+  <div class="pages" id="main-app" style="display:none">
+
+    <!-- HOME -->
+    <div class="page active" id="p-home">
+      <div class="phdr">
+        <div><div class="psub">Salesman Panel</div><div class="ptitle">Royal Jewel</div></div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <div style="position:relative;cursor:pointer" onclick="openSheet('sh-notifications')">
+            <i class="ti ti-bell" style="font-size:22px;color:var(--muted)"></i>
+            <div class="notif-dot"></div>
+          </div>
+          <div onclick="goPage('p-profile');setTab('tab-prof')" style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#B8860B,#D4A41F);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px">👨‍💼</div>
+        </div>
+      </div>
+      <div style="padding-bottom:16px">
+        <div class="hero-dark">
+          <div style="font-size:9px;font-weight:700;color:rgba(240,196,64,0.55);text-transform:uppercase;letter-spacing:1.4px">Today's Revenue</div>
+          <div style="font-size:42px;font-weight:800;color:#fff;letter-spacing:-2px;line-height:1;margin:6px 0 2px;font-family:var(--font-d)">₹2.4L</div>
+          <div style="font-size:11px;color:rgba(240,196,64,0.45);font-weight:500">12 orders · <span style="color:rgba(134,239,172,0.8)">▲ 18%</span> from yesterday · Jun 4</div>
+          <div class="hpills">
+            <div class="hpill"><div class="hpill-l">Target</div><div class="hpill-v">₹5L</div></div>
+            <div class="hpill"><div class="hpill-l">Achieved</div><div class="hpill-v">48%</div></div>
+            <div class="hpill"><div class="hpill-l">Open Est.</div><div class="hpill-v">9</div></div>
+          </div>
+        </div>
+        <div style="padding:12px 20px 0">
+          <div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:11px;color:var(--muted)">Monthly Target Progress</span><span style="font-size:11px;font-weight:700;color:var(--g)">48% · ₹2.4L / ₹5L</span></div>
+          <div class="prog-track"><div class="prog-fill" style="width:48%"></div></div>
+        </div>
+        <div class="sec-lbl">Quick Actions</div>
+        <div class="action-grid">
+          <div class="atile" onclick="goPage('p-new-estimate');goStep(1)">
+            <div class="atile-ico" style="background:#FEF9EC"><i class="ti ti-receipt" style="color:#B8860B"></i></div>
+            <div class="atile-name">New Estimate</div>
+          </div>
+          <div class="atile" onclick="goPage('p-estimations');setTab('tab-est')">
+            <div class="atile-ico" style="background:#EFF6FF"><i class="ti ti-files" style="color:#1E40AF"></i></div>
+            <div class="atile-name">Estimations</div>
+          </div>
+          <div class="atile" onclick="goPage('p-stock');setTab('tab-stock')">
+            <div class="atile-ico" style="background:#F0FDF4"><i class="ti ti-package" style="color:#166534"></i></div>
+            <div class="atile-name">Stock Check</div>
+          </div>
+          <div class="atile" onclick="goPage('p-schemes');setTab('tab-schemes')">
+            <div class="atile-ico" style="background:#F5F3FF"><i class="ti ti-gift" style="color:#5B21B6"></i></div>
+            <div class="atile-name">Gold Schemes</div>
+          </div>
+          <div class="atile" onclick="goPage('p-sales-return');setTab('tab-ret')">
+            <div class="atile-ico" style="background:#FEF2F2"><i class="ti ti-arrow-back-up" style="color:#991B1B"></i></div>
+            <div class="atile-name">Sales Return</div>
+          </div>
+          <div class="atile" onclick="openSheet('sh-old-gold')">
+            <div class="atile-ico" style="background:#FFFBEB"><i class="ti ti-scale" style="color:#92400E"></i></div>
+            <div class="atile-name">Old Gold Buy</div>
+          </div>
+        </div>
+        <div class="sec-lbl">Recent Orders</div>
+        <div style="padding:0 16px">
+          <div class="card">
+            <div class="ios-row" style="border-bottom:0.5px solid rgba(201,168,76,0.1)">
+              <div class="ios-row-icon" style="background:#FEF9EC"><i class="ti ti-diamond" style="color:#B8860B;font-size:18px"></i></div>
+              <div style="flex:1"><div class="ios-row-title">Priya Menon — Gold Necklace</div><div class="ios-row-sub">22K · 32g · 10:32 AM</div></div>
+              <div style="text-align:right"><div style="font-size:14px;font-weight:700;color:var(--dark);font-family:var(--font-d)">₹1.98L</div><span class="badge b-amber">Open</span></div>
+            </div>
+            <div class="ios-row" style="border-bottom:0.5px solid rgba(201,168,76,0.1)">
+              <div class="ios-row-icon" style="background:#F0FDF4"><i class="ti ti-circle-check" style="color:#166534;font-size:18px"></i></div>
+              <div style="flex:1"><div class="ios-row-title">Anitha Raj — Gold Bangles</div><div class="ios-row-sub">22K · 44.5g · 11:15 AM</div></div>
+              <div style="text-align:right"><div style="font-size:14px;font-weight:700;color:var(--dark);font-family:var(--font-d)">₹3.22L</div><span class="badge b-green">Closed</span></div>
+            </div>
+            <div class="ios-row">
+              <div class="ios-row-icon" style="background:#EFF6FF"><i class="ti ti-ring" style="color:#1E40AF;font-size:18px"></i></div>
+              <div style="flex:1"><div class="ios-row-title">Meera S — Diamond Ring</div><div class="ios-row-sub">18K · 8.2g · 2:00 PM</div></div>
+              <div style="text-align:right"><div style="font-size:14px;font-weight:700;color:var(--dark);font-family:var(--font-d)">₹65K</div><span class="badge b-green">Closed</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="pb"></div>
+      </div>
+    </div>
+
+    <!-- ESTIMATIONS -->
+    <div class="page" id="p-estimations">
+      <div class="phdr">
+        <div><div class="psub">Billing</div><div class="ptitle">Estimations</div></div>
+        <button onclick="goPage('p-new-estimate');goStep(1)" style="background:linear-gradient(135deg,#B8860B,#D4A41F);border:none;border-radius:13px;padding:8px 14px;font-size:12px;font-weight:700;color:#1A100A;cursor:pointer;font-family:var(--font-b)">+ New</button>
+      </div>
+      <div>
+        <div style="display:flex;gap:7px;padding:12px 16px 4px;overflow-x:auto;scrollbar-width:none;position:sticky;top:56px;z-index:40;background:var(--cream)">
+          <div class="tag-pill sel" onclick="filterEst('all',this)">All</div>
+          <div class="tag-pill" onclick="filterEst('open',this)">Open</div>
+          <div class="tag-pill" onclick="filterEst('closed',this)">Closed</div>
+          <div class="tag-pill" onclick="filterEst('returned',this)">Returned</div>
+        </div>
+        <div class="sec-lbl" id="est-lbl">All Estimations (2)</div>
+        <!-- EST 1 -->
+        <div class="est-card" data-status="open" id="ec1">
+          <div class="est-hdr">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:5px">
+              <div><div style="font-size:17px;font-weight:700;color:var(--dark);font-family:var(--font-d)">Priya Menon</div><div style="font-size:11px;color:var(--muted)">EST-001 · +91 98765 43210</div></div>
+              <span class="badge b-amber">Open</span>
+            </div>
+            <div style="font-size:11px;color:var(--muted)">Gold Necklace Set · 22K · RJ-NS-003</div>
+          </div>
+          <div class="est-row"><span class="est-lbl">Net Wt</span><span class="est-val">32.00 g</span></div>
+          <div class="est-row"><span class="est-lbl">Gold Rate</span><span class="est-val">₹6,800/g</span></div>
+          <div class="est-row"><span class="est-lbl">Making</span><span class="est-val">₹8,500</span></div>
+          <div class="est-total">
+            <div><div style="font-size:9px;font-weight:700;color:rgba(240,196,64,0.55);text-transform:uppercase;letter-spacing:0.8px">Total (incl. GST 3%)</div><div style="font-size:17px;font-weight:700;color:#F0C040;font-family:var(--font-d)">₹1,98,000</div></div>
+          </div>
+          <div class="est-footer">
+            <button class="est-act" style="background:#FFFBEB;color:#92400E;border:0.5px solid #FDE68A">✏️ Edit</button>
+            <button class="est-act" style="background:#F0FDF4;color:#166534;border:0.5px solid #BBF7D0" onclick="closeEst('ec1')">✓ Close</button>
+            <button class="est-act" style="background:#F0F9FF;color:#1E40AF;border:0.5px solid #BFDBFE">🖨 Print</button>
+          </div>
+        </div>
+        <!-- EST 2 -->
+        <div class="est-card" data-status="closed" id="ec2">
+          <div class="est-hdr">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:5px">
+              <div><div style="font-size:17px;font-weight:700;color:var(--dark);font-family:var(--font-d)">Anitha Raj</div><div style="font-size:11px;color:var(--muted)">EST-003 · +91 97440 55678</div></div>
+              <span class="badge b-green">Closed</span>
+            </div>
+            <div style="font-size:11px;color:var(--muted)">Gold Bangles · 22K · RJ-BG-007</div>
+          </div>
+          <div class="est-row"><span class="est-lbl">Net Wt</span><span class="est-val">44.50 g</span></div>
+          <div class="est-row"><span class="est-lbl">Bill No</span><span class="est-val">INV-2025-003</span></div>
+          <div class="est-total">
+            <div><div style="font-size:9px;font-weight:700;color:rgba(240,196,64,0.55);text-transform:uppercase;letter-spacing:0.8px">Total (incl. GST 3%)</div><div style="font-size:17px;font-weight:700;color:#F0C040;font-family:var(--font-d)">₹3,22,845</div></div>
+          </div>
+          <div class="est-footer">
+            <button class="est-act" style="background:#FEF2F2;color:#991B1B;border:0.5px solid #FECACA" onclick="openRetSheet('INV-2025-003','Anitha Raj','322845')">↩ Return</button>
+            <button class="est-act" style="background:#FFFBEB;color:#92400E;border:0.5px solid #FDE68A">↺ Reopen</button>
+            <button class="est-act" style="background:#F0F9FF;color:#1E40AF;border:0.5px solid #BFDBFE">🖨 Print</button>
+          </div>
+        </div>
+        <div class="pb"></div>
+      </div>
+    </div>
+
+    <!-- NEW ESTIMATE -->
+    <div class="page" id="p-new-estimate">
+      <div class="phdr" style="padding:10px 16px">
+        <div onclick="goPage('p-estimations');setTab('tab-est')" style="width:36px;height:36px;border-radius:50%;background:rgba(201,168,76,0.1);border:0.5px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer"><i class="ti ti-arrow-left" style="font-size:17px;color:var(--dark)"></i></div>
+        <div style="text-align:center"><div class="psub">New</div><div style="font-size:18px;font-weight:700;color:var(--dark);font-family:var(--font-d)">Estimation</div></div>
+        <div style="width:36px"></div>
+      </div>
+      <div class="step-bar">
+        <div class="si active" id="sbar-1"><div class="si-num">1</div><div class="si-lbl">Customer</div></div>
+        <div class="si" id="sbar-2"><div class="si-num">2</div><div class="si-lbl">Item</div></div>
+        <div class="si" id="sbar-3"><div class="si-num">3</div><div class="si-lbl">Old Gold</div></div>
+        <div class="si" id="sbar-4"><div class="si-num">4</div><div class="si-lbl">Scheme</div></div>
+        <div class="si" id="sbar-5"><div class="si-num">5</div><div class="si-lbl">Summary</div></div>
+      </div>
+      <div style="flex:1;overflow-y:auto;scrollbar-width:none" id="step-scroll">
+
+        <!-- STEP 1 CUSTOMER -->
+        <div class="spanel active" id="step-1">
+          <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1.4px;margin:12px 0 10px">Customer Details</div>
+          <div class="card" style="padding:16px;margin-bottom:14px">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div class="inp-grp"><label class="inp-lbl">First Name</label><input class="ios-inp" id="c-fname" placeholder="First name"></div>
+              <div class="inp-grp"><label class="inp-lbl">Middle Name</label><input class="ios-inp" id="c-mname" placeholder="Middle"></div>
+              <div class="inp-grp" style="grid-column:1/-1"><label class="inp-lbl">Last Name</label><input class="ios-inp" id="c-lname" placeholder="Last name"></div>
+              <div class="inp-grp" style="grid-column:1/-1"><label class="inp-lbl">Mobile Number</label><input class="ios-inp" id="c-mobile" placeholder="+91 XXXXX XXXXX" type="tel"></div>
+              <div class="inp-grp" style="grid-column:1/-1"><label class="inp-lbl">Address</label><input class="ios-inp" id="c-addr1" placeholder="House / Flat no, Street"></div>
+            </div>
+            <button type="button" onclick="toggleMore()" style="width:100%;margin-top:12px;padding:11px;border:0.5px solid var(--border);border-radius:12px;background:rgba(201,168,76,0.04);font-weight:600;cursor:pointer;font-size:13px;color:var(--muted);font-family:var(--font-b)" id="more-btn">+ More Details</button>
+            <div id="moreDetails" style="display:none;margin-top:12px">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                <div class="inp-grp" style="grid-column:1/-1"><label class="inp-lbl">Address Line 2</label><input class="ios-inp" id="c-addr2" placeholder="Area, Landmark"></div>
+                <div class="inp-grp"><label class="inp-lbl">City</label><input class="ios-inp" id="c-city" placeholder="Kozhikode"></div>
+                <div class="inp-grp"><label class="inp-lbl">State</label><input class="ios-inp" id="c-state" placeholder="Kerala"></div>
+                <div class="inp-grp"><label class="inp-lbl">PIN Code</label><input class="ios-inp" id="c-pin" placeholder="6XXXXX"></div>
+                <div class="inp-grp"><label class="inp-lbl">Alt. Mobile</label><input class="ios-inp" id="c-alt" placeholder="+91 XXXXX"></div>
+                <div class="inp-grp" style="grid-column:1/-1"><label class="inp-lbl">Email</label><input class="ios-inp" id="c-email" type="email" placeholder="email@example.com"></div>
+                <div class="inp-grp"><label class="inp-lbl">Date of Birth</label><input class="ios-inp" id="c-dob" type="date"></div>
+                <div class="inp-grp"><label class="inp-lbl">Anniversary</label><input class="ios-inp" id="c-ann" type="date"></div>
+                <div class="inp-grp" style="grid-column:1/-1"><label class="inp-lbl">Aadhaar / PAN (optional)</label><input class="ios-inp" id="c-id" placeholder="For bill above ₹2L"></div>
+                <div class="inp-grp" style="grid-column:1/-1"><label class="inp-lbl">Customer Type</label><select class="ios-inp" id="c-type"><option value="">Select</option><option>Regular</option><option>VIP</option><option>Wholesale</option><option>New</option></select></div>
+                <div class="inp-grp" style="grid-column:1/-1"><label class="inp-lbl">Notes</label><input class="ios-inp" id="c-notes" placeholder="Any special notes..."></div>
+              </div>
+            </div>
+            <button class="gold-btn" style="margin-top:14px" onclick="goStep(2)">Save & Continue →</button>
+          </div>
+        </div>
+
+        <!-- STEP 2 ITEM -->
+        <div class="spanel" id="step-2">
+          <div style="margin:12px 0 12px;display:flex;align-items:center;justify-content:space-between">
+            <div class="notice-chip"><i class="ti ti-user-check" style="font-size:13px;color:var(--g)"></i> Customer set</div>
+            <span onclick="goStep(1)" style="font-size:11px;font-weight:700;color:var(--g);cursor:pointer">Change ›</span>
+          </div>
+          <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1.4px;margin-bottom:10px">Item Selection</div>
+          <div class="card" style="padding:16px;margin-bottom:14px">
+            <div class="inp-grp"><label class="inp-lbl">Entry Method</label>
+              <div style="display:flex;gap:8px;margin-top:6px">
+                <button class="type-btn active" id="tbtn-barcode" onclick="selectItemType('barcode',this)"><i class="ti ti-barcode" style="font-size:13px;vertical-align:-2px"></i> Barcode</button>
+                <button class="type-btn" id="tbtn-manual" onclick="selectItemType('manual',this)"><i class="ti ti-pencil" style="font-size:13px;vertical-align:-2px"></i> Manual</button>
+              </div>
+            </div>
+            <div id="barcode-sec">
+              <div style="background:linear-gradient(135deg,#1A100A,#2C1810);border-radius:16px;height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;margin-top:10px;border:0.5px solid rgba(201,168,76,0.2);cursor:pointer" onclick="simulateScan()">
+                <i class="ti ti-camera" style="font-size:26px;color:rgba(240,196,64,0.7)"></i>
+                <div style="font-size:10px;color:rgba(240,196,64,0.5)">Tap to scan barcode</div>
+              </div>
+              <div class="inp-grp" style="margin-top:10px"><label class="inp-lbl">Barcode / SKU</label><input class="ios-inp" id="sku-inp" placeholder="e.g. RJ-NS-003" oninput="lookupSKU(this.value)"></div>
+            </div>
+            <div id="manual-sec" style="display:none">
+              <div class="inp-grp" style="margin-top:4px"><label class="inp-lbl">Item Name</label><input class="ios-inp" id="item-name" placeholder="e.g. Gold Necklace Set"></div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                <div class="inp-grp"><label class="inp-lbl">Category</label><select class="ios-inp" id="item-cat"><option>Necklace</option><option>Ring</option><option>Bangle</option><option>Earring</option><option>Chain</option><option>Pendant</option><option>Bracelet</option></select></div>
+                <div class="inp-grp"><label class="inp-lbl">Purity</label><select class="ios-inp" id="item-purity"><option>22K</option><option>18K</option><option>24K</option><option>14K</option><option>916</option></select></div>
+              </div>
+            </div>
+            <div id="sku-found-banner" style="display:none;background:var(--green-l);border:0.5px solid var(--green-b);border-radius:12px;padding:10px 12px;margin-top:10px">
+              <div style="font-size:11px;font-weight:700;color:var(--green)">✓ Item Found: Gold Necklace Set 22K</div>
+              <div style="font-size:10px;color:var(--muted);margin-top:2px">RJ-NS-003 · Gross: 35.50g · Net: 32.00g</div>
+            </div>
+            <div class="divl"></div>
+            <!-- GOLD DETAILS -->
+            <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:10px">Gold Details</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div class="inp-grp"><label class="inp-lbl">Gross Wt (g)</label><input class="ios-inp" id="gross-wt" value="35.50" oninput="calcTotal()"></div>
+              <div class="inp-grp"><label class="inp-lbl">Net Wt (g)</label><input class="ios-inp" id="net-wt" value="32.00" oninput="calcTotal()"></div>
+              <div class="inp-grp"><label class="inp-lbl">Gold Rate (₹/g)</label><input class="ios-inp" id="gold-rate" value="6800" oninput="calcTotal()"></div>
+              <div class="inp-grp"><label class="inp-lbl">Making Charges (₹)</label><input class="ios-inp" id="mc" value="8500" oninput="calcTotal()"></div>
+              <div class="inp-grp"><label class="inp-lbl">Wastage %</label><input class="ios-inp" id="wastage" value="0" oninput="calcTotal()"></div>
+              <div class="inp-grp"><label class="inp-lbl">Hallmark (₹)</label><input class="ios-inp" id="hallmark" value="0" oninput="calcTotal()"></div>
+            </div>
+            <div class="divl"></div>
+            <!-- DIAMOND SECTION -->
+            <div class="gem-hdr">
+              <div style="display:flex;align-items:center;gap:7px">
+                <span style="font-size:16px">💎</span>
+                <span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.4px;color:var(--dmd)">Diamond Details</span>
+                <span id="dmd-badge" style="display:none;background:rgba(107,127,212,0.1);color:var(--dmd);border:0.5px solid var(--dmd-b);border-radius:20px;padding:2px 8px;font-size:9px;font-weight:700">Added</span>
+              </div>
+              <div class="gem-toggle" style="background:var(--dmd-l);border:0.5px solid var(--dmd-b)" onclick="toggleDmd()">
+                <span class="gem-pill" id="dmd-off" style="color:rgba(107,127,212,0.5)">Off</span>
+                <span class="gem-pill" id="dmd-on" style="color:rgba(107,127,212,0.4)">On</span>
+              </div>
+            </div>
+            <div id="dmd-section" style="display:none">
+              <div class="dmd-box">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                  <div class="inp-grp"><label class="inp-lbl" style="color:var(--dmd)">Wt (ct)</label><input class="ios-inp" id="dmd-wt" placeholder="0.00" oninput="calcTotal()" style="border-color:var(--dmd-b);background:rgba(107,127,212,0.04)"></div>
+                  <div class="inp-grp"><label class="inp-lbl" style="color:var(--dmd)">Rate (₹/ct)</label><input class="ios-inp" id="dmd-rate" placeholder="0" oninput="calcTotal()" style="border-color:var(--dmd-b);background:rgba(107,127,212,0.04)"></div>
+                  <div class="inp-grp"><label class="inp-lbl" style="color:var(--dmd)">Setting (₹)</label><input class="ios-inp" id="dmd-setting" placeholder="0" oninput="calcTotal()" style="border-color:var(--dmd-b);background:rgba(107,127,212,0.04)"></div>
+                  <div class="inp-grp"><label class="inp-lbl" style="color:var(--dmd)">No. Pieces</label><input class="ios-inp" id="dmd-pcs" placeholder="0" style="border-color:var(--dmd-b);background:rgba(107,127,212,0.04)"></div>
+                </div>
+                <div id="dmd-calc-box" style="display:none;border-top:0.5px solid var(--dmd-b);padding-top:10px;margin-top:4px">
+                  <div class="gem-val-row"><span class="gem-val-lbl">Diamond Value</span><span style="font-size:12px;font-weight:700;color:var(--dmd)" id="dmd-gem-val">₹0</span></div>
+                  <div class="gem-val-row"><span class="gem-val-lbl">Setting Charges</span><span style="font-size:12px;font-weight:700;color:var(--dmd)" id="dmd-set-disp">₹0</span></div>
+                  <div class="gem-val-row"><span class="gem-val-lbl" style="font-weight:700;color:var(--dmd)">Total Diamond</span><span style="font-size:14px;font-weight:700;color:var(--dmd)" id="dmd-total-disp">₹0</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="divl"></div>
+            <!-- CS SECTION -->
+            <div class="gem-hdr">
+              <div style="display:flex;align-items:center;gap:7px">
+                <span style="font-size:16px">🪨</span>
+                <span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.4px;color:var(--cs)">Coloured Stone</span>
+                <span id="cs-badge" style="display:none;background:rgba(46,139,87,0.1);color:var(--cs);border:0.5px solid var(--cs-b);border-radius:20px;padding:2px 8px;font-size:9px;font-weight:700">Added</span>
+              </div>
+              <div class="gem-toggle" style="background:var(--cs-l);border:0.5px solid var(--cs-b)" onclick="toggleCS()">
+                <span class="gem-pill" id="cs-off" style="color:rgba(46,139,87,0.5)">Off</span>
+                <span class="gem-pill" id="cs-on" style="color:rgba(46,139,87,0.4)">On</span>
+              </div>
+            </div>
+            <div id="cs-section" style="display:none">
+              <div class="cs-box">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                  <div class="inp-grp"><label class="inp-lbl" style="color:var(--cs)">Wt (ct)</label><input class="ios-inp" id="cs-wt" placeholder="0.00" oninput="calcTotal()" style="border-color:var(--cs-b);background:rgba(46,139,87,0.04)"></div>
+                  <div class="inp-grp"><label class="inp-lbl" style="color:var(--cs)">Rate (₹/ct)</label><input class="ios-inp" id="cs-rate" placeholder="0" oninput="calcTotal()" style="border-color:var(--cs-b);background:rgba(46,139,87,0.04)"></div>
+                  <div class="inp-grp"><label class="inp-lbl" style="color:var(--cs)">Setting (₹)</label><input class="ios-inp" id="cs-setting" placeholder="0" oninput="calcTotal()" style="border-color:var(--cs-b);background:rgba(46,139,87,0.04)"></div>
+                  <div class="inp-grp"><label class="inp-lbl" style="color:var(--cs)">Stone Type</label><select class="ios-inp" style="border-color:var(--cs-b);background:rgba(46,139,87,0.04)"><option>Select</option><option>Ruby</option><option>Emerald</option><option>Sapphire</option><option>Pearl</option><option>Coral</option><option>Topaz</option><option>Amethyst</option></select></div>
+                </div>
+                <div id="cs-calc-box" style="display:none;border-top:0.5px solid var(--cs-b);padding-top:10px;margin-top:4px">
+                  <div class="gem-val-row"><span class="gem-val-lbl">Stone Value</span><span style="font-size:12px;font-weight:700;color:var(--cs)" id="cs-gem-val">₹0</span></div>
+                  <div class="gem-val-row"><span class="gem-val-lbl">Setting</span><span style="font-size:12px;font-weight:700;color:var(--cs)" id="cs-set-disp">₹0</span></div>
+                  <div class="gem-val-row"><span class="gem-val-lbl" style="font-weight:700;color:var(--cs)">Total CS</span><span style="font-size:14px;font-weight:700;color:var(--cs)" id="cs-total-disp">₹0</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="divl"></div>
+            <!-- ITEM TOTAL -->
+            <div class="item-total-box">
+              <div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:11.5px;color:var(--muted)">Gold Value</span><span style="font-size:12px;font-weight:600;color:var(--dark)" id="it-gold-val">₹2,17,600</span></div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:11.5px;color:var(--muted)">Making + Hallmark</span><span style="font-size:12px;font-weight:600;color:var(--dark)" id="it-mc-val">₹8,500</span></div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:11.5px;color:var(--muted)">Wastage</span><span style="font-size:12px;font-weight:600;color:var(--dark)" id="it-waste-val">₹0</span></div>
+              <div id="it-dmd-row" style="display:none;justify-content:space-between;margin-bottom:5px"><span style="font-size:11.5px;color:var(--dmd)">💎 Diamond</span><span style="font-size:12px;font-weight:700;color:var(--dmd)" id="it-dmd-val">₹0</span></div>
+              <div id="it-cs-row" style="display:none;justify-content:space-between;margin-bottom:5px"><span style="font-size:11.5px;color:var(--cs)">🪨 Col. Stone</span><span style="font-size:12px;font-weight:700;color:var(--cs)" id="it-cs-val">₹0</span></div>
+              <div style="height:0.5px;background:rgba(201,168,76,0.2);margin:8px 0"></div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:12px;color:var(--muted)">Subtotal</span><span style="font-size:13px;font-weight:600;color:var(--dark)" id="it-sub">₹2,26,100</span></div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:12px;color:var(--muted)">GST (3%)</span><span style="font-size:12px;font-weight:600;color:var(--dark)" id="it-gst">₹6,783</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px">
+                <span style="font-size:13px;font-weight:700;color:var(--dark)">Total (incl. GST)</span>
+                <span style="font-size:20px;font-weight:700;color:var(--g);font-family:var(--font-d)" id="it-total-gst">₹2,32,883</span>
+              </div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+            <button class="ghost-btn" onclick="goStep(1)">← Back</button>
+            <button class="gold-btn" onclick="goStep(3)">Next →</button>
+          </div>
+        </div>
+
+        <!-- STEP 3 OLD GOLD -->
+        <div class="spanel" id="step-3">
+          <div style="margin:12px 0 12px;display:flex;align-items:center;justify-content:space-between">
+            <div class="notice-chip"><i class="ti ti-diamond" style="font-size:13px;color:var(--g)"></i> Item set</div>
+            <span onclick="goStep(2)" style="font-size:11px;font-weight:700;color:var(--g);cursor:pointer">Change ›</span>
+          </div>
+          <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1.4px;margin-bottom:10px">Old Gold Exchange (Optional)</div>
+          <div class="card" style="padding:16px;margin-bottom:14px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+              <div style="font-size:14px;font-weight:600;color:var(--dark)">Customer has old gold?</div>
+              <div class="toggle-row">
+                <div class="radio-opt" id="og-yes" onclick="toggleOG(true)">Yes</div>
+                <div class="radio-opt sel" id="og-no" onclick="toggleOG(false)">No</div>
+              </div>
+            </div>
+            <div id="og-section" style="display:none">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                <div class="inp-grp"><label class="inp-lbl">Gross Wt (g)</label><input class="ios-inp" id="og-gross" placeholder="0.00" oninput="calcOG()"></div>
+                <div class="inp-grp"><label class="inp-lbl">Net Wt (g)</label><input class="ios-inp" id="og-net" placeholder="0.00" oninput="calcOG()"></div>
+                <div class="inp-grp"><label class="inp-lbl">Purity</label><select class="ios-inp"><option>22K</option><option>18K</option><option>916</option><option>24K</option></select></div>
+                <div class="inp-grp"><label class="inp-lbl">Rate (₹/g)</label><input class="ios-inp" id="og-rate" placeholder="6500" oninput="calcOG()"></div>
+              </div>
+              <div class="item-total-box" style="margin-top:10px">
+                <div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:11.5px;color:var(--muted)">Old Gold Value</span><span style="font-size:14px;font-weight:700;color:var(--g)" id="og-total-display">₹0</span></div>
+                <div class="divl" style="margin:8px 0"></div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:11.5px;color:var(--muted)">New Item Total</span><span style="font-size:12px;font-weight:600;color:var(--dark)" id="og-new-total">₹2,32,883</span></div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:11.5px;color:var(--muted)">Less: Old Gold</span><span style="font-size:12px;font-weight:700;color:#991B1B" id="og-deduct">- ₹0</span></div>
+                <div class="divl" style="margin:8px 0"></div>
+                <div style="display:flex;justify-content:space-between;align-items:center">
+                  <span style="font-size:13px;font-weight:700;color:var(--dark)">Net Payable</span>
+                  <span style="font-size:20px;font-weight:700;color:var(--g);font-family:var(--font-d)" id="og-net-payable">₹2,32,883</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+            <button class="ghost-btn" onclick="goStep(2)">← Back</button>
+            <button class="gold-btn" onclick="goStep(4)">Next →</button>
+          </div>
+        </div>
+
+        <!-- STEP 4 SCHEME -->
+        <div class="spanel" id="step-4">
+          <div style="margin:12px 0 12px"><div class="notice-chip"><i class="ti ti-gift" style="font-size:13px;color:var(--g)"></i> Scheme & Discount</div></div>
+          <div class="card" style="padding:16px;margin-bottom:14px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+              <div><div style="font-size:14px;font-weight:600;color:var(--dark)">Link a Gold Scheme?</div><div style="font-size:11px;color:var(--muted);margin-top:2px">Apply scheme savings to bill</div></div>
+              <div class="toggle-row">
+                <div class="radio-opt" id="sch-yes" onclick="toggleScheme(true)">Yes</div>
+                <div class="radio-opt sel" id="sch-no" onclick="toggleScheme(false)">No</div>
+              </div>
+            </div>
+            <div id="scheme-section" style="display:none">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                <div class="inp-grp" style="grid-column:1/-1"><label class="inp-lbl">Scheme Number</label><input class="ios-inp" id="sch-num" placeholder="e.g. SCH-2024-0089"></div>
+                <div class="inp-grp"><label class="inp-lbl">Months Paid</label><input class="ios-inp" id="sch-months" placeholder="e.g. 11" oninput="calcScheme()"></div>
+                <div class="inp-grp"><label class="inp-lbl">Monthly Amount (₹)</label><input class="ios-inp" id="sch-monthly" placeholder="5000" oninput="calcScheme()"></div>
+                <div class="inp-grp"><label class="inp-lbl">Benefit (₹)</label><input class="ios-inp" id="sch-benefit" placeholder="0" oninput="calcScheme()"></div>
+                <div class="inp-grp"><label class="inp-lbl">Type</label><select class="ios-inp" id="sch-type"><option>Monthly Chit</option><option>Annual Saving</option><option>Advance Gold</option><option>Loyalty Points</option></select></div>
+              </div>
+              <div id="sch-calc-box" style="display:none;background:linear-gradient(135deg,#1A100A,#2C1810);border-radius:16px;padding:16px;margin-top:10px">
+                <div style="font-size:9px;font-weight:700;color:rgba(240,196,64,0.55);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">Scheme Summary</div>
+                <div class="sr"><span class="sr-l">Amount Deposited</span><span class="sr-v" id="sch-deposited">₹0</span></div>
+                <div class="sr"><span class="sr-l">Scheme Benefit</span><span class="sr-v" id="sch-benefit-val">₹0</span></div>
+                <div class="sr"><span class="sr-l">Total Scheme Value</span><span class="sr-v" id="sch-total-val">₹0</span></div>
+              </div>
+            </div>
+          </div>
+          <!-- DISCOUNT -->
+          <div class="card" style="padding:16px;margin-bottom:14px">
+            <div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:12px">Discount</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div class="inp-grp"><label class="inp-lbl">Discount Type</label><select class="ios-inp" id="s-discount-type" onchange="calcFinal()"><option value="percent">Percentage (%)</option><option value="amount">Fixed Amount (₹)</option></select></div>
+              <div class="inp-grp"><label class="inp-lbl">Value</label><input class="ios-inp" id="s-discount-value" placeholder="0" oninput="calcFinal()"></div>
+            </div>
+            <div id="discount-preview" style="display:none;background:rgba(201,168,76,0.06);border:0.5px solid var(--border);border-radius:12px;padding:12px;margin-top:4px;display:flex;justify-content:space-between">
+              <span style="font-size:12px;color:var(--muted)">Discount Applied</span>
+              <span style="font-size:14px;font-weight:700;color:var(--g)" id="discount-amt-preview">₹0</span>
+            </div>
+          </div>
+          <!-- SALES RETURN IN ESTIMATE -->
+          <div class="card" style="padding:16px;margin-bottom:14px">
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div><div style="font-size:14px;font-weight:600;color:var(--dark)">Is this a Sales Return?</div><div style="font-size:11px;color:var(--muted);margin-top:2px">Exchange / return linked</div></div>
+              <div class="toggle-row">
+                <div class="radio-opt" id="sr-yes" onclick="toggleSalesReturn(true)">Yes</div>
+                <div class="radio-opt sel" id="sr-no" onclick="toggleSalesReturn(false)">No</div>
+              </div>
+            </div>
+            <div id="salesreturn-section" style="display:none;margin-top:14px">
+              <div class="inp-grp"><label class="inp-lbl">Original Bill Number</label><input class="ios-inp" placeholder="e.g. INV-2025-003"></div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px">
+                <div class="inp-grp"><label class="inp-lbl">Return Reason</label><select class="ios-inp"><option>Quality Issue</option><option>Wrong Item</option><option>Size / Fit</option><option>Change of Mind</option><option>Exchange</option></select></div>
+                <div class="inp-grp"><label class="inp-lbl">Return Amount (₹)</label><input class="ios-inp" id="sr-orig-amt" placeholder="0" oninput="calcSR()"></div>
+              </div>
+              <div class="chip-red">
+                <span style="font-size:12px;font-weight:700;color:#991B1B">Return Deduction</span>
+                <span style="font-size:17px;font-weight:700;color:#991B1B;font-family:var(--font-d)" id="sr-ret-amount">₹0</span>
+              </div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+            <button class="ghost-btn" onclick="goStep(3)">← Back</button>
+            <button class="gold-btn" onclick="goStep(5)">Review →</button>
+          </div>
+        </div>
+
+        <!-- STEP 5 SUMMARY -->
+        <div class="spanel" id="step-5">
+          <div style="margin:12px 0 12px"><div class="notice-chip"><i class="ti ti-clipboard-list" style="font-size:13px;color:var(--g)"></i> Final Bill Summary</div></div>
+          <!-- SELECTED ITEM DETAILS -->
+          <div style="background:linear-gradient(135deg,#1A100A,#2C1810);border-radius:18px;padding:18px;margin-bottom:12px">
+            <div style="font-size:9px;font-weight:700;color:rgba(240,196,64,0.55);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:10px">📋 Item Selected</div>
+            <div class="sr"><span class="sr-l">Item</span><span class="sr-v" id="s-item-name">Gold Necklace Set</span></div>
+            <div class="sr"><span class="sr-l">Category</span><span class="sr-v" id="s-item-cat">Necklace</span></div>
+            <div class="sr"><span class="sr-l">Purity</span><span class="sr-v" id="s-item-purity">22K</span></div>
+            <div class="sr"><span class="sr-l">Gross Weight</span><span class="sr-v" id="s-gross-wt">35.50 g</span></div>
+            <div class="sr"><span class="sr-l">Net Weight</span><span class="sr-v" id="s-wt">32.00 g</span></div>
+            <div class="sr"><span class="sr-l">Gold Rate</span><span class="sr-v" id="s-rate">₹6,800/g</span></div>
+            <div class="sr-div"></div>
+            <div class="sr"><span class="sr-l">Gold Value</span><span class="sr-v" id="s-gold">₹2,17,600</span></div>
+            <div class="sr"><span class="sr-l">Making + Hallmark</span><span class="sr-v" id="s-mc">₹8,500</span></div>
+            <div class="sr"><span class="sr-l">Wastage</span><span class="sr-v" id="s-waste">₹0</span></div>
+            <div id="s-dmd-block" style="display:none">
+              <div class="sr-div"></div>
+              <div style="font-size:9px;font-weight:700;color:rgba(107,127,212,0.6);text-transform:uppercase;letter-spacing:1px;margin:4px 0 6px">💎 Diamond</div>
+              <div class="sr"><span class="sr-l">Dmd Weight</span><span class="sr-v" id="s-dmd-wt">—</span></div>
+              <div class="sr"><span class="sr-l">Diamond Total</span><span class="sr-v" id="s-dmd-total">₹0</span></div>
+            </div>
+            <div id="s-cs-block" style="display:none">
+              <div class="sr-div"></div>
+              <div style="font-size:9px;font-weight:700;color:rgba(46,139,87,0.6);text-transform:uppercase;letter-spacing:1px;margin:4px 0 6px">🪨 Coloured Stone</div>
+              <div class="sr"><span class="sr-l">CS Weight</span><span class="sr-v" id="s-cs-wt">—</span></div>
+              <div class="sr"><span class="sr-l">Stone Total</span><span class="sr-v" id="s-cs-total">₹0</span></div>
+            </div>
+            <div class="sr-div"></div>
+            <div class="sr"><span class="sr-l">Subtotal</span><span class="sr-v" id="s-sub">₹2,26,100</span></div>
+            <div class="sr"><span class="sr-l">GST (3%)</span><span class="sr-v" id="s-gst">₹6,783</span></div>
+            <div class="sr-div"></div>
+            <div class="sr"><span class="sr-l" style="color:rgba(240,196,64,0.8)">Old Gold Deduction</span><span id="s-og-ded" style="font-size:13px;font-weight:700;color:#F87171">₹0</span></div>
+            <div class="sr"><span class="sr-l" style="color:rgba(240,196,64,0.8)">Scheme Benefit</span><span id="s-sch-ded" style="font-size:13px;font-weight:700;color:#86EFAC">₹0</span></div>
+            <div class="sr"><span class="sr-l" style="color:rgba(240,196,64,0.8)">Discount</span><span id="s-discount-disp" style="font-size:13px;font-weight:700;color:#FBBF24">₹0</span></div>
+            <div class="sr-div"></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0">
+              <span style="font-size:14px;font-weight:700;color:#F0C040">Total Payable</span>
+              <span id="s-total" style="font-size:24px;font-weight:700;color:#F0C040;font-family:var(--font-d)">₹2,32,883</span>
+            </div>
+          </div>
+          <div id="s-sales-return-row" style="display:none;background:var(--red-l);border:0.5px solid var(--red-b);border-radius:14px;padding:14px;margin-bottom:14px">
+            <div style="font-size:10px;font-weight:700;color:#991B1B;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Sales Return Linked</div>
+            <div style="display:flex;justify-content:space-between;margin-top:4px">
+              <span style="font-size:13px;font-weight:700;color:#991B1B">Net After Return</span>
+              <span id="s-net-after-ret" style="font-size:18px;font-weight:700;color:#991B1B;font-family:var(--font-d)">₹0</span>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+            <button class="ghost-btn" onclick="goStep(4)">← Back</button>
+            <button class="gold-btn" onclick="saveEstimateSuccess()">💾 Save & Print</button>
+          </div>
+          <div class="pb"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SALES RETURN PAGE -->
+    <div class="page" id="p-sales-return">
+      <div class="phdr" style="padding:10px 16px">
+        <div onclick="goPage('p-home');setTab('tab-home')" style="width:36px;height:36px;border-radius:50%;background:var(--red-l);border:0.5px solid var(--red-b);display:flex;align-items:center;justify-content:center;cursor:pointer"><i class="ti ti-arrow-left" style="font-size:17px;color:#991B1B"></i></div>
+        <div style="text-align:center"><div class="psub" style="color:#991B1B">Process</div><div style="font-size:18px;font-weight:700;color:var(--dark);font-family:var(--font-d)">Sales Return</div></div>
+        <div style="width:36px"></div>
+      </div>
+      <div style="padding:0 16px 16px">
+        <div class="pill-toggle" style="margin:14px 0">
+          <button class="pill-opt active" id="ret-tab-bill" onclick="setRetTab('bill')"><i class="ti ti-receipt" style="font-size:13px;vertical-align:-2px"></i> By Bill</button>
+          <button class="pill-opt" id="ret-tab-manual" onclick="setRetTab('manual')"><i class="ti ti-pencil" style="font-size:13px;vertical-align:-2px"></i> Manual</button>
+        </div>
+        <div id="ret-panel-bill">
+          <div class="card" style="padding:16px;margin-bottom:14px">
+            <div class="inp-grp"><label class="inp-lbl">Bill / Invoice Number</label><input class="ios-inp" id="ret-bill-inp" placeholder="e.g. INV-2025-003" oninput="lookupBill(this.value)"></div>
+            <div id="ret-bill-found" style="display:none">
+              <div class="divl"></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                <div><div style="font-size:15px;font-weight:700;color:var(--dark);font-family:var(--font-d)">Anitha Raj</div><div style="font-size:11px;color:var(--muted)">INV-2025-003 · 03 Jan 2025</div></div>
+                <span class="badge b-green">Found</span>
+              </div>
+              <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Items in Bill</div>
+              <div class="mode-card chosen" style="margin-bottom:8px">
+                <div style="display:flex;justify-content:space-between;align-items:center">
+                  <div><div style="font-size:14px;font-weight:600;color:var(--dark)">Gold Bangles 22K</div><div style="font-size:11px;color:var(--muted);margin-top:2px">RJ-BG-007 · 44.50g · ₹3,22,845</div></div>
+                  <div style="width:22px;height:22px;border-radius:50%;background:var(--g);display:flex;align-items:center;justify-content:center;font-size:11px;color:#1A100A;font-weight:700">✓</div>
+                </div>
+              </div>
+              <button class="red-btn" style="margin-top:8px" onclick="openRetSheet('INV-2025-003','Anitha Raj','322845')">↩ Process Return / Exchange</button>
+            </div>
+          </div>
+        </div>
+        <div id="ret-panel-manual" style="display:none">
+          <div class="card" style="padding:16px;margin-bottom:14px">
+            <div class="inp-grp"><label class="inp-lbl">Customer Name</label><input class="ios-inp" placeholder="Customer name"></div>
+            <div class="inp-grp"><label class="inp-lbl">Item Name</label><input class="ios-inp" placeholder="e.g. Gold Necklace"></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div class="inp-grp"><label class="inp-lbl">Net Wt (g)</label><input class="ios-inp" id="ret-net" placeholder="0.00" oninput="calcManualRet()"></div>
+              <div class="inp-grp"><label class="inp-lbl">Gold Rate (₹/g)</label><input class="ios-inp" id="ret-rate" placeholder="6800" oninput="calcManualRet()"></div>
+            </div>
+            <div class="chip-red">
+              <span style="font-size:12px;font-weight:700;color:#991B1B">Return Amount</span>
+              <span style="font-size:17px;font-weight:700;color:#991B1B;font-family:var(--font-d)" id="ret-amt-disp">₹0</span>
+            </div>
+            <button class="red-btn" style="margin-top:10px" onclick="openRetSheet('MANUAL','Customer','0')">↩ Process Return</button>
+          </div>
+        </div>
+        <div class="pb"></div>
+      </div>
+    </div>
+
+    <!-- STOCK PAGE -->
+    <div class="page" id="p-stock">
+      <div class="phdr">
+        <div><div class="psub">Inventory</div><div class="ptitle">Stock Check</div></div>
+        <i class="ti ti-barcode-off" style="font-size:22px;color:var(--muted);cursor:pointer" onclick="openSheet('sh-barcode-scan')"></i>
+      </div>
+      <div>
+        <div style="padding:12px 16px 4px">
+          <div style="background:rgba(201,168,76,0.06);border:0.5px solid var(--border);border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:10px">
+            <i class="ti ti-search" style="font-size:17px;color:var(--muted)"></i>
+            <input style="flex:1;background:none;border:none;outline:none;font-size:14px;color:var(--dark);font-family:var(--font-b)" placeholder="Search by name, SKU, or barcode..." id="stock-search" oninput="filterStock(this.value)">
+          </div>
+        </div>
+        <div style="display:flex;gap:7px;padding:8px 16px 4px;overflow-x:auto;scrollbar-width:none">
+          <div class="tag-pill sel" onclick="filterStockCat('all',this)">All</div>
+          <div class="tag-pill" onclick="filterStockCat('Necklace',this)">Necklace</div>
+          <div class="tag-pill" onclick="filterStockCat('Ring',this)">Rings</div>
+          <div class="tag-pill" onclick="filterStockCat('Bangle',this)">Bangles</div>
+          <div class="tag-pill" onclick="filterStockCat('Earring',this)">Earrings</div>
+        </div>
+        <div class="sec-lbl">All Products</div>
+        <div style="padding:0 16px" id="stock-list">
+          <!-- Dynamic stock items -->
+        </div>
+        <div class="pb"></div>
+      </div>
+    </div>
+
+    <!-- SCHEMES PAGE -->
+    <div class="page" id="p-schemes">
+      <div class="phdr">
+        <div><div class="psub">Gold Plans</div><div class="ptitle">Schemes</div></div>
+        <button onclick="openSheet('sh-scheme-payment')" style="background:rgba(91,33,182,0.1);border:0.5px solid #C4B5FD;border-radius:13px;padding:8px 14px;font-size:12px;font-weight:700;color:#5B21B6;cursor:pointer;font-family:var(--font-b)">💳 Collect</button>
+      </div>
+      <div>
+        <div class="pill-toggle" style="margin:12px 16px 4px">
+          <button class="pill-opt active" id="sch-tab-plans" onclick="setSchTab('plans')">Plans</button>
+          <button class="pill-opt" id="sch-tab-enrolled" onclick="setSchTab('enrolled')">Enrolled</button>
+          <button class="pill-opt" id="sch-tab-payment" onclick="setSchTab('payment')">Payments</button>
+        </div>
+
+        <!-- PLANS TAB -->
+        <div id="sch-panel-plans">
+          <div class="sec-lbl">Available Plans</div>
+          <div style="padding:0 16px">
+            <div class="scheme-card sel" onclick="openEnrollSheet('Basic Plan','5000','12')">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+                <div><div style="font-size:16px;font-weight:700;color:var(--dark);font-family:var(--font-d)">Basic Plan</div><div style="font-size:11px;color:var(--muted);margin-top:2px">₹5,000/month · 12 months</div></div>
+                <span class="badge b-amber">Starter</span>
+              </div>
+              <div style="font-size:12px;color:var(--muted);margin-bottom:10px">Pay 11 months, get 12th month free (₹5,000 benefit)</div>
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <div><span style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase">Total Value</span><div style="font-size:18px;font-weight:700;color:var(--g);font-family:var(--font-d)">₹60,000</div></div>
+                <button style="background:var(--g);color:#1A100A;border:none;border-radius:11px;padding:9px 16px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--font-b)" onclick="event.stopPropagation();openEnrollSheet('Basic Plan','5000','12')">+ Enroll</button>
+              </div>
+            </div>
+            <div class="scheme-card" onclick="openEnrollSheet('Premium Plan','10000','12')">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+                <div><div style="font-size:16px;font-weight:700;color:var(--dark);font-family:var(--font-d)">Premium Plan</div><div style="font-size:11px;color:var(--muted);margin-top:2px">₹10,000/month · 12 months</div></div>
+                <span class="badge b-purple">Popular ✦</span>
+              </div>
+              <div style="font-size:12px;color:var(--muted);margin-bottom:10px">11 months paid + ₹10,000 benefit + priority service</div>
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <div><span style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase">Total Value</span><div style="font-size:18px;font-weight:700;color:var(--g);font-family:var(--font-d)">₹1,20,000</div></div>
+                <button style="background:var(--g);color:#1A100A;border:none;border-radius:11px;padding:9px 16px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--font-b)" onclick="event.stopPropagation();openEnrollSheet('Premium Plan','10000','12')">+ Enroll</button>
+              </div>
+            </div>
+            <div class="scheme-card" onclick="openEnrollSheet('Elite Plan','25000','12')">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+                <div><div style="font-size:16px;font-weight:700;color:var(--dark);font-family:var(--font-d)">Elite Plan</div><div style="font-size:11px;color:var(--muted);margin-top:2px">₹25,000/month · 12 months</div></div>
+                <span class="badge b-green">Exclusive</span>
+              </div>
+              <div style="font-size:12px;color:var(--muted);margin-bottom:10px">VIP benefits + ₹25,000 bonus + gold rate lock-in</div>
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <div><span style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase">Total Value</span><div style="font-size:18px;font-weight:700;color:var(--g);font-family:var(--font-d)">₹3,00,000</div></div>
+                <button style="background:var(--g);color:#1A100A;border:none;border-radius:11px;padding:9px 16px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--font-b)" onclick="event.stopPropagation();openEnrollSheet('Elite Plan','25000','12')">+ Enroll</button>
+              </div>
+            </div>
+          </div>
+          <div class="pb"></div>
+        </div>
+
+        <!-- ENROLLED TAB -->
+        <div id="sch-panel-enrolled" style="display:none">
+          <div class="sec-lbl">Active Enrollments</div>
+          <div style="padding:0 16px">
+            <div class="card" style="margin-bottom:10px">
+              <div class="ios-row" style="border-bottom:0.5px solid rgba(201,168,76,0.1)">
+                <div class="ios-row-icon" style="background:#F5F3FF"><i class="ti ti-user" style="color:#5B21B6;font-size:17px"></i></div>
+                <div style="flex:1"><div class="ios-row-title">Priya Menon</div><div class="ios-row-sub">SCH-2024-0089 · Basic Plan · Month 8/12</div></div>
+                <div style="text-align:right"><div style="font-size:13px;font-weight:700;color:var(--g)">₹40K</div><span class="badge b-green">Active</span></div>
+              </div>
+              <div style="padding:10px 16px">
+                <div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:11px;color:var(--muted)">Progress</span><span style="font-size:11px;font-weight:700;color:var(--g)">8/12 months</span></div>
+                <div class="prog-track"><div class="prog-fill" style="width:66%"></div></div>
+                <button style="width:100%;margin-top:10px;padding:9px;background:rgba(201,168,76,0.1);border:0.5px solid var(--border);border-radius:11px;font-size:12px;font-weight:700;color:var(--g);cursor:pointer;font-family:var(--font-b)" onclick="openSheet('sh-scheme-payment')">Collect Payment</button>
+              </div>
+            </div>
+            <div class="card" style="margin-bottom:10px">
+              <div class="ios-row">
+                <div class="ios-row-icon" style="background:#F5F3FF"><i class="ti ti-user" style="color:#5B21B6;font-size:17px"></i></div>
+                <div style="flex:1"><div class="ios-row-title">Anitha Raj</div><div class="ios-row-sub">SCH-2024-0091 · Premium Plan · Month 11/12</div></div>
+                <div style="text-align:right"><div style="font-size:13px;font-weight:700;color:var(--g)">₹1.1L</div><span class="badge b-amber">Due</span></div>
+              </div>
+              <div style="padding:10px 16px">
+                <div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:11px;color:var(--muted)">Progress</span><span style="font-size:11px;font-weight:700;color:#92400E">11/12 months</span></div>
+                <div class="prog-track"><div class="prog-fill" style="width:91%"></div></div>
+                <button style="width:100%;margin-top:10px;padding:9px;background:rgba(201,168,76,0.1);border:0.5px solid var(--border);border-radius:11px;font-size:12px;font-weight:700;color:var(--g);cursor:pointer;font-family:var(--font-b)" onclick="openSheet('sh-scheme-payment')">Collect Final Payment</button>
+              </div>
+            </div>
+          </div>
+          <div class="pb"></div>
+        </div>
+
+        <!-- PAYMENT TAB -->
+        <div id="sch-panel-payment" style="display:none">
+          <div class="sec-lbl">Scheme Payment History</div>
+          <div style="padding:0 16px">
+            <div class="card">
+              <div class="ios-row" style="border-bottom:0.5px solid rgba(201,168,76,0.1)">
+                <div class="ios-row-icon" style="background:#F0FDF4"><i class="ti ti-check" style="color:#166534;font-size:17px"></i></div>
+                <div style="flex:1"><div class="ios-row-title">Priya Menon — SCH-0089</div><div class="ios-row-sub">Month 8 · Today 10:30 AM</div></div>
+                <div style="font-size:14px;font-weight:700;color:var(--green)">+₹5,000</div>
+              </div>
+              <div class="ios-row" style="border-bottom:0.5px solid rgba(201,168,76,0.1)">
+                <div class="ios-row-icon" style="background:#F0FDF4"><i class="ti ti-check" style="color:#166534;font-size:17px"></i></div>
+                <div style="flex:1"><div class="ios-row-title">Anitha Raj — SCH-0091</div><div class="ios-row-sub">Month 11 · Yesterday</div></div>
+                <div style="font-size:14px;font-weight:700;color:var(--green)">+₹10,000</div>
+              </div>
+              <div class="ios-row">
+                <div class="ios-row-icon" style="background:#FEF9EC"><i class="ti ti-clock" style="color:#B8860B;font-size:17px"></i></div>
+                <div style="flex:1"><div class="ios-row-title">Meera S — SCH-0093</div><div class="ios-row-sub">Month 3 · 2 days ago</div></div>
+                <div style="font-size:14px;font-weight:700;color:var(--green)">+₹5,000</div>
+              </div>
+            </div>
+          </div>
+          <div class="pb"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROFILE PAGE -->
+    <div class="page" id="p-profile">
+      <div style="background:linear-gradient(160deg,#1A100A,#2C1810,#4A2820);padding:60px 22px 28px;display:flex;flex-direction:column;align-items:center;position:relative;overflow:hidden">
+        <div style="position:absolute;top:-50px;right:-50px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(201,168,76,0.15) 0%,transparent 70%)"></div>
+        <div style="width:84px;height:84px;border-radius:50%;background:linear-gradient(135deg,#FEF9EC,#F7F0E0);display:flex;align-items:center;justify-content:center;font-size:32px;border:2.5px solid rgba(201,168,76,0.4);margin-bottom:12px;box-shadow:0 8px 28px rgba(201,168,76,0.25)">👨‍💼</div>
+        <div style="font-size:24px;font-weight:700;color:#fff;font-family:var(--font-d)">Rajan Nair</div>
+        <div style="font-size:11px;color:rgba(240,196,64,0.55);margin-top:3px;letter-spacing:0.5px">Senior Salesman · Kozhikode Branch</div>
+        <div style="display:flex;gap:7px;margin-top:12px">
+          <div style="background:rgba(201,168,76,0.18);border:0.5px solid rgba(201,168,76,0.3);border-radius:20px;padding:5px 12px;font-size:10px;font-weight:700;color:#F0C040">⭐ Top Performer</div>
+          <div style="background:rgba(201,168,76,0.18);border:0.5px solid rgba(201,168,76,0.3);border-radius:20px;padding:5px 12px;font-size:10px;font-weight:700;color:#F0C040">5 Yrs Exp</div>
+        </div>
+      </div>
+      <!-- Stats -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border-bottom:0.5px solid var(--border)">
+        <div style="text-align:center;padding:16px 8px;border-right:0.5px solid var(--border)"><div style="font-size:20px;font-weight:700;color:var(--dark);font-family:var(--font-d)">₹14.8L</div><div style="font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.5px">Revenue</div></div>
+        <div style="text-align:center;padding:16px 8px;border-right:0.5px solid var(--border)"><div style="font-size:20px;font-weight:700;color:var(--dark);font-family:var(--font-d)">87</div><div style="font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.5px">Orders</div></div>
+        <div style="text-align:center;padding:16px 8px"><div style="font-size:20px;font-weight:700;color:var(--dark);font-family:var(--font-d)">23</div><div style="font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.5px">Schemes</div></div>
+      </div>
+      <div style="padding:0 16px 30px">
+        <div class="sec-lbl">Targets & Performance</div>
+        <div class="card">
+          <div class="ios-row" style="border-bottom:0.5px solid rgba(201,168,76,0.1)">
+            <div class="ios-row-icon" style="background:#FEF9EC"><i class="ti ti-target" style="font-size:17px;color:#B8860B"></i></div>
+            <div style="flex:1"><div class="ios-row-title">Monthly Target</div><div class="ios-row-sub">₹5,00,000 · 48% achieved</div></div>
+            <i class="ti ti-chevron-right" style="font-size:16px;color:rgba(201,168,76,0.5)"></i>
+          </div>
+          <div class="ios-row">
+            <div class="ios-row-icon" style="background:#F0FDF4"><i class="ti ti-coin" style="font-size:17px;color:#166534"></i></div>
+            <div style="flex:1"><div class="ios-row-title">Commission Earned</div><div class="ios-row-sub">₹22,400 this month</div></div>
+            <i class="ti ti-chevron-right" style="font-size:16px;color:rgba(201,168,76,0.5)"></i>
+          </div>
+        </div>
+        <div class="sec-lbl">Account</div>
+        <div class="card">
+          <div class="ios-row" style="border-bottom:0.5px solid rgba(201,168,76,0.1)">
+            <div class="ios-row-icon" style="background:#FEF9EC"><i class="ti ti-user" style="font-size:17px;color:#B8860B"></i></div>
+            <div style="flex:1"><div class="ios-row-title">Personal Info</div><div class="ios-row-sub">Edit name, phone, branch</div></div>
+            <i class="ti ti-chevron-right" style="font-size:16px;color:rgba(201,168,76,0.5)"></i>
+          </div>
+          <div class="ios-row" style="border-bottom:0.5px solid rgba(201,168,76,0.1)">
+            <div class="ios-row-icon" style="background:#EFF6FF"><i class="ti ti-lock" style="font-size:17px;color:#1E40AF"></i></div>
+            <div style="flex:1"><div class="ios-row-title">Change Password</div><div class="ios-row-sub">Update login credentials</div></div>
+            <i class="ti ti-chevron-right" style="font-size:16px;color:rgba(201,168,76,0.5)"></i>
+          </div>
+          <div class="ios-row">
+            <div class="ios-row-icon" style="background:#FEF2F2"><i class="ti ti-logout" style="font-size:17px;color:#991B1B"></i></div>
+            <div style="flex:1"><div class="ios-row-title" style="color:#991B1B">Log Out</div></div>
+            <i class="ti ti-chevron-right" style="font-size:16px;color:rgba(201,168,76,0.5)"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /pages -->
+
+  <!-- TABBAR -->
+  <div class="tabbar" id="main-tabbar" style="display:none">
+    <div class="tab active" id="tab-home" onclick="goPage('p-home');setTab('tab-home')"><i class="ti ti-home"></i><div class="tab-lbl">Home</div></div>
+    <div class="tab" id="tab-est" onclick="goPage('p-estimations');setTab('tab-est')"><i class="ti ti-files"></i><div class="tab-lbl">Estimates</div></div>
+    <div class="tab" id="tab-stock" onclick="goPage('p-stock');setTab('tab-stock')"><i class="ti ti-package"></i><div class="tab-lbl">Stock</div></div>
+    <div class="tab" id="tab-schemes" onclick="goPage('p-schemes');setTab('tab-schemes')"><i class="ti ti-gift"></i><div class="tab-lbl">Schemes</div></div>
+    <div class="tab" id="tab-ret" onclick="goPage('p-sales-return');setTab('tab-ret')"><i class="ti ti-arrow-back-up"></i><div class="tab-lbl">Return</div></div>
+    <div class="tab" id="tab-prof" onclick="goPage('p-profile');setTab('tab-prof')"><i class="ti ti-user"></i><div class="tab-lbl">Profile</div></div>
+  </div>
+
+  <!-- RETURN SHEET -->
+  <div id="sh-return" class="sh-ov" onclick="closeSheetOut(event,'sh-return')">
+    <div class="sheet">
+      <div class="sh-handle"></div>
+      <div class="sh-hdr"><div class="sh-title">Return / Exchange</div><button class="sh-close" onclick="closeSheet('sh-return')"><i class="ti ti-x" style="font-size:14px"></i></button></div>
+      <div class="sh-body">
+        <div style="background:rgba(201,168,76,0.06);border:0.5px solid var(--border);border-radius:13px;padding:12px 14px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center">
+          <div><div style="font-size:15px;font-weight:700;color:var(--dark);font-family:var(--font-d)" id="re-cust">Customer</div><div style="font-size:11px;color:var(--muted)" id="re-bill">Invoice</div></div>
+          <div style="text-align:right"><div style="font-size:10px;color:var(--muted)">Bill Amount</div><div style="font-size:17px;font-weight:700;color:var(--dark);font-family:var(--font-d)" id="re-amt">₹0</div></div>
+        </div>
+        <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:10px">Select Mode</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
+          <div class="mode-card chosen" id="mode-return" onclick="selMode('return')"><i class="ti ti-arrow-back-up" style="font-size:22px;color:#B8860B;display:block;margin-bottom:6px"></i><div style="font-size:13px;font-weight:700;color:var(--dark)">Full Return</div><div style="font-size:10px;color:var(--muted);margin-top:2px">Refund to customer</div></div>
+          <div class="mode-card" id="mode-exchange" onclick="selMode('exchange')"><i class="ti ti-refresh" style="font-size:22px;color:#B8860B;display:block;margin-bottom:6px"></i><div style="font-size:13px;font-weight:700;color:var(--dark)">Exchange</div><div style="font-size:10px;color:var(--muted);margin-top:2px">New item purchase</div></div>
+        </div>
+        <div id="sh-ret-panel">
+          <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:10px">Refund Method</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px">
+            <div class="payout-tile sel" id="pay-cash" onclick="selPay('cash')"><i class="ti ti-cash"></i><div class="payout-tile-lbl">Cash</div></div>
+            <div class="payout-tile" id="pay-upi" onclick="selPay('upi')"><i class="ti ti-device-mobile"></i><div class="payout-tile-lbl">UPI</div></div>
+            <div class="payout-tile" id="pay-neft" onclick="selPay('neft')"><i class="ti ti-building-bank"></i><div class="payout-tile-lbl">NEFT</div></div>
+          </div>
+          <div id="pay-upi-f" style="display:none;margin-bottom:10px"><div class="inp-grp"><label class="inp-lbl">UPI ID</label><input class="ios-inp" placeholder="9876543210@upi"></div></div>
+          <div id="pay-neft-f" style="display:none;margin-bottom:10px">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div class="inp-grp"><label class="inp-lbl">Account No</label><input class="ios-inp" placeholder="Account number"></div>
+              <div class="inp-grp"><label class="inp-lbl">IFSC</label><input class="ios-inp" placeholder="IFSC Code"></div>
+            </div>
+          </div>
+          <div class="inp-grp"><label class="inp-lbl">Return Reason</label><select class="ios-inp"><option>Quality Issue</option><option>Wrong Item</option><option>Size / Fit</option><option>Change of Mind</option></select></div>
+          <div class="chip-red" style="margin-top:10px">
+            <span style="font-size:12px;font-weight:700;color:#991B1B">Refund Amount</span>
+            <span style="font-size:18px;font-weight:700;color:#991B1B;font-family:var(--font-d)" id="refund-disp">₹0</span>
+          </div>
+          <button class="red-btn" style="margin-top:12px" onclick="confirmReturn()">✓ Confirm Return & Refund</button>
+        </div>
+        <div id="sh-exch-panel" style="display:none">
+          <div class="card" style="padding:14px;margin-bottom:12px">
+            <div class="inp-grp"><label class="inp-lbl">New Item Name</label><input class="ios-inp" placeholder="e.g. Gold Chain 22K"></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div class="inp-grp"><label class="inp-lbl">Net Wt (g)</label><input class="ios-inp" id="ex-wt" placeholder="0.00" oninput="calcExch()"></div>
+              <div class="inp-grp"><label class="inp-lbl">Gold Rate (₹/g)</label><input class="ios-inp" id="ex-rate" value="6800" oninput="calcExch()"></div>
+              <div class="inp-grp"><label class="inp-lbl">Making (₹)</label><input class="ios-inp" id="ex-mc" placeholder="0" oninput="calcExch()"></div>
+              <div class="inp-grp"><label class="inp-lbl">Purity</label><select class="ios-inp"><option>22K</option><option>18K</option><option>24K</option></select></div>
+            </div>
+          </div>
+          <div style="background:rgba(201,168,76,0.05);border:0.5px solid var(--border);border-radius:13px;padding:14px;margin-bottom:12px">
+            <div class="ledger-row"><span style="font-size:11.5px;color:var(--muted)">Returned Value</span><span style="font-size:12px;font-weight:700;color:var(--dark)" id="ex-ret-val">₹0</span></div>
+            <div class="ledger-row"><span style="font-size:11.5px;color:var(--muted)">New Item Value</span><span style="font-size:12px;font-weight:700;color:var(--dark)" id="ex-new-val">₹0</span></div>
+            <div class="ledger-row"><span style="font-size:11.5px;color:var(--muted)">GST on New (3%)</span><span style="font-size:12px;font-weight:700;color:var(--dark)" id="ex-gst">₹0</span></div>
+          </div>
+          <div id="ex-chip-pay" style="display:none" class="chip-red"><span style="font-size:12px;font-weight:700;color:#991B1B">Customer Pays</span><span style="font-size:18px;font-weight:700;color:#991B1B;font-family:var(--font-d)" id="ex-cust-pays">₹0</span></div>
+          <div id="ex-chip-ref" style="display:none" class="chip-green"><span style="font-size:12px;font-weight:700;color:#166534">Refund to Customer</span><span style="font-size:18px;font-weight:700;color:#166534;font-family:var(--font-d)" id="ex-cust-refund">₹0</span></div>
+          <button class="gold-btn" style="margin-top:12px" onclick="confirmExch()">🔄 Confirm Exchange</button>
+        </div>
+        <div class="pb"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OLD GOLD SHEET -->
+  <div id="sh-old-gold" class="sh-ov" onclick="closeSheetOut(event,'sh-old-gold')">
+    <div class="sheet">
+      <div class="sh-handle"></div>
+      <div class="sh-hdr"><div class="sh-title">Old Gold Purchase</div><button class="sh-close" onclick="closeSheet('sh-old-gold')"><i class="ti ti-x" style="font-size:14px"></i></button></div>
+      <div class="sh-body">
+        <div style="background:var(--green-l);border:0.5px solid var(--green-b);border-radius:12px;padding:12px;margin-bottom:14px;display:flex;gap:10px">
+          <i class="ti ti-info-circle" style="font-size:16px;color:#166534;flex-shrink:0"></i>
+          <div style="font-size:12px;color:#166534;font-weight:500;line-height:1.5">Customer selling old gold. Enter details and select payout method.</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div class="inp-grp" style="grid-column:1/-1"><label class="inp-lbl">Mobile</label><input class="ios-inp" placeholder="+91 XXXXX XXXXX"></div>
+          <div class="inp-grp"><label class="inp-lbl">First Name</label><input class="ios-inp" placeholder="First"></div>
+          <div class="inp-grp"><label class="inp-lbl">Last Name</label><input class="ios-inp" placeholder="Last"></div>
+        </div>
+        <div class="divl"></div>
+        <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:10px">Old Gold Details</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div class="inp-grp"><label class="inp-lbl">Item</label><input class="ios-inp" placeholder="Old Bangles"></div>
+          <div class="inp-grp"><label class="inp-lbl">Purity</label><select class="ios-inp"><option>22K</option><option>18K</option><option>916</option><option>24K</option></select></div>
+          <div class="inp-grp"><label class="inp-lbl">Gross Wt (g)</label><input class="ios-inp" id="ogb-gr" placeholder="0.00" oninput="calcOGB()"></div>
+          <div class="inp-grp"><label class="inp-lbl">Net Wt (g)</label><input class="ios-inp" id="ogb-nt" placeholder="0.00" oninput="calcOGB()"></div>
+          <div class="inp-grp"><label class="inp-lbl">Mud Wt (g)</label><input class="ios-inp" id="ogb-mud" placeholder="0.00" oninput="calcOGB()"></div>
+          <div class="inp-grp"><label class="inp-lbl">Rate (₹/g)</label><input class="ios-inp" id="ogb-rt" value="6500" oninput="calcOGB()"></div>
+        </div>
+        <div class="item-total-box" style="margin:10px 0 14px">
+          <div class="ledger-row"><span style="font-size:11.5px;color:var(--muted)">Gold Value</span><span style="font-size:12px;font-weight:700;color:var(--dark)" id="ogb-gval">₹0</span></div>
+          <div style="height:0.5px;background:rgba(201,168,76,0.2);margin:8px 0"></div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span style="font-size:13px;font-weight:700;color:var(--dark)">Payable to Customer</span>
+            <span style="font-size:18px;font-weight:700;color:#166534;font-family:var(--font-d)" id="ogb-total">₹0</span>
+          </div>
+        </div>
+        <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:10px">Payout Method</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px">
+          <div class="payout-tile sel" id="ogb-cash" onclick="selOGBPay('cash')"><i class="ti ti-cash"></i><div class="payout-tile-lbl">Cash</div></div>
+          <div class="payout-tile" id="ogb-upi" onclick="selOGBPay('upi')"><i class="ti ti-device-mobile"></i><div class="payout-tile-lbl">UPI</div></div>
+          <div class="payout-tile" id="ogb-neft" onclick="selOGBPay('neft')"><i class="ti ti-building-bank"></i><div class="payout-tile-lbl">NEFT</div></div>
+        </div>
+        <div id="ogb-upi-f" style="display:none;margin-bottom:10px"><div class="inp-grp"><label class="inp-lbl">UPI ID</label><input class="ios-inp" placeholder="9876543210@upi"></div></div>
+        <div id="ogb-neft-f" style="display:none;margin-bottom:10px">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <div class="inp-grp"><label class="inp-lbl">Account No</label><input class="ios-inp" placeholder="Account number"></div>
+            <div class="inp-grp"><label class="inp-lbl">IFSC</label><input class="ios-inp" placeholder="IFSC Code"></div>
+          </div>
+        </div>
+        <button class="gold-btn" onclick="saveOGB()">💰 Save Old Gold Purchase</button>
+        <div class="pb"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ENROLL SHEET -->
+  <div id="sh-enroll" class="sh-ov" onclick="closeSheetOut(event,'sh-enroll')">
+    <div class="sheet">
+      <div class="sh-handle"></div>
+      <div class="sh-hdr"><div class="sh-title">Enroll Customer</div><button class="sh-close" onclick="closeSheet('sh-enroll')"><i class="ti ti-x" style="font-size:14px"></i></button></div>
+      <div class="sh-body">
+        <div style="background:linear-gradient(135deg,#1A100A,#2C1810);border-radius:16px;padding:16px;margin-bottom:16px;border:0.5px solid rgba(201,168,76,0.2)">
+          <div style="font-size:9px;font-weight:700;color:rgba(240,196,64,0.55);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Selected Plan</div>
+          <div style="font-size:22px;font-weight:700;color:#fff;font-family:var(--font-d)" id="enroll-plan-name">Basic Plan</div>
+          <div style="font-size:13px;color:rgba(240,196,64,0.6)" id="enroll-plan-detail">₹5,000/month · 12 months</div>
+        </div>
+        <div class="inp-grp"><label class="inp-lbl">Customer Name</label><input class="ios-inp" placeholder="Full name"></div>
+        <div class="inp-grp"><label class="inp-lbl">Mobile Number</label><input class="ios-inp" placeholder="+91 XXXXX XXXXX" type="tel"></div>
+        <div class="inp-grp"><label class="inp-lbl">Aadhaar / PAN Number</label><input class="ios-inp" placeholder="ID number (optional)"></div>
+        <div class="inp-grp"><label class="inp-lbl">Start Date</label><input class="ios-inp" type="date"></div>
+        <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;margin:14px 0 10px">First Payment</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px">
+          <div class="payout-tile sel" id="enroll-cash" onclick="selEnrollPay('cash')"><i class="ti ti-cash"></i><div class="payout-tile-lbl">Cash</div></div>
+          <div class="payout-tile" id="enroll-upi" onclick="selEnrollPay('upi')"><i class="ti ti-device-mobile"></i><div class="payout-tile-lbl">UPI</div></div>
+          <div class="payout-tile" id="enroll-neft" onclick="selEnrollPay('neft')"><i class="ti ti-building-bank"></i><div class="payout-tile-lbl">NEFT</div></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px">
+          <button class="ghost-btn" onclick="closeSheet('sh-enroll')">Save Draft</button>
+          <button class="gold-btn" onclick="confirmEnroll()">Enroll & Pay</button>
+        </div>
+        <div class="pb"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCHEME PAYMENT SHEET -->
+  <div id="sh-scheme-payment" class="sh-ov" onclick="closeSheetOut(event,'sh-scheme-payment')">
+    <div class="sheet">
+      <div class="sh-handle"></div>
+      <div class="sh-hdr"><div class="sh-title">Collect Payment</div><button class="sh-close" onclick="closeSheet('sh-scheme-payment')"><i class="ti ti-x" style="font-size:14px"></i></button></div>
+      <div class="sh-body">
+        <div class="inp-grp"><label class="inp-lbl">Scheme Number</label><input class="ios-inp" placeholder="e.g. SCH-2024-0089" oninput="lookupScheme(this.value)"></div>
+        <div id="scheme-found" style="display:none">
+          <div style="background:var(--green-l);border:0.5px solid var(--green-b);border-radius:12px;padding:12px;margin-bottom:14px">
+            <div style="font-size:13px;font-weight:700;color:var(--dark)">Priya Menon — Basic Plan</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:2px">Month 8 of 12 · ₹5,000 due</div>
+          </div>
+          <div class="inp-grp"><label class="inp-lbl">Payment Amount (₹)</label><input class="ios-inp" value="5000" id="sch-pay-amt"></div>
+          <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;margin:12px 0 10px">Payment Method</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px">
+            <div class="payout-tile sel" id="schpay-cash" onclick="selSchPay('cash')"><i class="ti ti-cash"></i><div class="payout-tile-lbl">Cash</div></div>
+            <div class="payout-tile" id="schpay-upi" onclick="selSchPay('upi')"><i class="ti ti-device-mobile"></i><div class="payout-tile-lbl">UPI</div></div>
+            <div class="payout-tile" id="schpay-neft" onclick="selSchPay('neft')"><i class="ti ti-building-bank"></i><div class="payout-tile-lbl">NEFT</div></div>
+          </div>
+          <button class="gold-btn" onclick="confirmSchemePayment()">✓ Collect ₹5,000</button>
+        </div>
+        <div class="pb"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BARCODE SCAN SHEET -->
+  <div id="sh-barcode-scan" class="sh-ov" onclick="closeSheetOut(event,'sh-barcode-scan')">
+    <div class="sheet">
+      <div class="sh-handle"></div>
+      <div class="sh-hdr"><div class="sh-title">Barcode Scanner</div><button class="sh-close" onclick="closeSheet('sh-barcode-scan')"><i class="ti ti-x" style="font-size:14px"></i></button></div>
+      <div class="sh-body">
+        <div style="background:linear-gradient(135deg,#1A100A,#2C1810);border-radius:22px;height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;border:0.5px solid rgba(201,168,76,0.2);cursor:pointer;position:relative;overflow:hidden" onclick="simulateScanStock()">
+          <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(201,168,76,0.03) 3px,rgba(201,168,76,0.03) 4px)"></div>
+          <i class="ti ti-camera" style="font-size:48px;color:rgba(240,196,64,0.7)"></i>
+          <div style="font-size:13px;color:rgba(240,196,64,0.6);font-weight:500">Tap to scan barcode</div>
+          <div id="scan-line" style="position:absolute;top:30%;left:10%;right:10%;height:2px;background:rgba(201,168,76,0.6);box-shadow:0 0 8px rgba(201,168,76,0.8);animation:scanAnim 2s linear infinite"></div>
+        </div>
+        <style>@keyframes scanAnim{0%{top:20%}100%{top:75%}}</style>
+        <div class="inp-grp" style="margin-top:16px"><label class="inp-lbl">Or Type SKU / Barcode</label><input class="ios-inp" placeholder="e.g. RJ-NS-003"></div>
+        <div id="scan-result" style="display:none;background:var(--green-l);border:0.5px solid var(--green-b);border-radius:12px;padding:12px;margin-top:10px">
+          <div style="font-size:12px;font-weight:700;color:var(--green)">✓ Found: Gold Necklace Set 22K</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px">RJ-NS-003 · In Stock: 8 pcs · ₹2.32L</div>
+        </div>
+        <button class="gold-btn" style="margin-top:14px" onclick="closeSheet('sh-barcode-scan')">Done</button>
+        <div class="pb"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTIFICATIONS SHEET -->
+  <div id="sh-notifications" class="sh-ov" onclick="closeSheetOut(event,'sh-notifications')">
+    <div class="sheet">
+      <div class="sh-handle"></div>
+      <div class="sh-hdr"><div class="sh-title">Notifications</div><button class="sh-close" onclick="closeSheet('sh-notifications')"><i class="ti ti-x" style="font-size:14px"></i></button></div>
+      <div class="sh-body">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="background:rgba(201,168,76,0.06);border:0.5px solid var(--border);border-radius:14px;padding:14px">
+            <div style="display:flex;gap:10px;align-items:flex-start">
+              <div style="width:36px;height:36px;border-radius:11px;background:#F5F3FF;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-gift" style="color:#5B21B6;font-size:17px"></i></div>
+              <div><div style="font-size:13px;font-weight:700;color:var(--dark)">Scheme payment due</div><div style="font-size:11px;color:var(--muted);margin-top:2px">Anitha Raj — SCH-0091 · Month 11 · ₹10,000</div><div style="font-size:10px;color:var(--g);margin-top:4px;font-weight:600">Today</div></div>
+            </div>
+          </div>
+          <div style="background:rgba(201,168,76,0.06);border:0.5px solid var(--border);border-radius:14px;padding:14px">
+            <div style="display:flex;gap:10px;align-items:flex-start">
+              <div style="width:36px;height:36px;border-radius:11px;background:#FEF9EC;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-target" style="color:#B8860B;font-size:17px"></i></div>
+              <div><div style="font-size:13px;font-weight:700;color:var(--dark)">Target 50% milestone approaching</div><div style="font-size:11px;color:var(--muted);margin-top:2px">₹2.5L needed to hit 50% for the month</div><div style="font-size:10px;color:var(--g);margin-top:4px;font-weight:600">2 hours ago</div></div>
+            </div>
+          </div>
+          <div style="background:rgba(201,168,76,0.06);border:0.5px solid var(--border);border-radius:14px;padding:14px">
+            <div style="display:flex;gap:10px;align-items:flex-start">
+              <div style="width:36px;height:36px;border-radius:11px;background:#FEF2F2;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-package" style="color:#991B1B;font-size:17px"></i></div>
+              <div><div style="font-size:13px;font-weight:700;color:var(--dark)">Low stock alert</div><div style="font-size:11px;color:var(--muted);margin-top:2px">Gold Bracelet (RJ-GB-002) — only 3 pcs left</div><div style="font-size:10px;color:var(--g);margin-top:4px;font-weight:600">Yesterday</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="pb"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUCCESS SHEET -->
+  <div id="sh-success" class="sh-ov">
+    <div class="sheet" style="text-align:center">
+      <div class="sh-handle"></div>
+      <div style="padding:18px 24px 28px">
+        <div style="width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,#B8860B,#D4A41F);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;box-shadow:0 8px 28px rgba(184,134,11,0.4)">
+          <i class="ti ti-check" style="font-size:30px;color:#1A100A" id="success-ico"></i>
+        </div>
+        <div style="font-size:22px;font-weight:700;color:var(--dark);font-family:var(--font-d);margin-bottom:7px" id="success-title">Done!</div>
+        <div style="font-size:13px;color:var(--muted);margin-bottom:22px;line-height:1.5" id="success-sub">Saved successfully.</div>
+        <button class="gold-btn" onclick="closeSheet('sh-success')">Done</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /phone -->
+
+<script>
+// ── State ──
+window.S = {
+  itemGST:232883, ogVal:0, ogActive:false,
+  schActive:false, schVal:0, srActive:false, srAmt:0,
+  retAmt:322845, dmdVal:0, csVal:0, dmdActive:false, csActive:false,
+  discountAmt:0
+};
+
+// ── Clock ──
+(function tick(){
+  var n=new Date();
+  document.getElementById('clock').textContent=n.getHours().toString().padStart(2,'0')+':'+n.getMinutes().toString().padStart(2,'0');
+  setTimeout(tick,10000);
+})();
+
+// ── Login ──
+function checkPhone(){
+  var v=document.getElementById('login-phone').value.replace(/\D/g,'');
+  var btn=document.getElementById('login-otp-btn');
+  btn.style.opacity=v.length===10?'1':'0.5';
+  btn.style.pointerEvents=v.length===10?'auto':'none';
+}
+function sendOTP(){
+  var ph=document.getElementById('login-phone').value.replace(/\D/g,'');
+  document.getElementById('otp-phone-disp').textContent='+91 '+ph.slice(0,5)+' '+ph.slice(5);
+  document.getElementById('login-step-1').style.display='none';
+  document.getElementById('login-step-2').style.display='block';
+  setTimeout(function(){document.getElementById('otp1').focus()},100);
+}
+function otpMove(el,nextId){
+  if(el.value.length===1&&nextId){document.getElementById(nextId).focus()}
+}
+function otpBack(e,el,prevId){
+  if(e.key==='Backspace'&&el.value===''&&prevId){document.getElementById(prevId).focus()}
+}
+function otpVerify(){
+  var code=['otp1','otp2','otp3','otp4'].map(function(i){return document.getElementById(i).value}).join('');
+  if(code==='1234')setTimeout(verifyOTP,300);
+}
+function verifyOTP(){
+  var code=['otp1','otp2','otp3','otp4'].map(function(i){return document.getElementById(i).value}).join('');
+  if(code==='1234'||code.length===4){
+    document.getElementById('p-login').style.display='none';
+    document.getElementById('main-app').style.display='flex';
+    document.getElementById('main-tabbar').style.display='flex';
+    document.getElementById('sbar').style.background='transparent';
+    document.getElementById('sbar').style.position='unset';
+    document.querySelector('.sbar-time').style.color='var(--text)';
+    document.querySelectorAll('.sbar-icons i').forEach(function(i){i.style.color='var(--text)'});
+    buildStockList();
+  } else {
+    document.querySelectorAll('.otp-inp').forEach(function(i){i.style.borderColor='#991B1B'});
+    setTimeout(function(){document.querySelectorAll('.otp-inp').forEach(function(i){i.style.borderColor=''})},1000);
+  }
+}
+function resendOTP(){
+  document.querySelectorAll('.otp-inp').forEach(function(i){i.value=''});
+  document.getElementById('otp1').focus();
+  document.getElementById('otp-hint').textContent='Code resent! Hint: 1234';
+}
+
+// ── Page & Tab Navigation ──
+function goPage(id){
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active')});
+  var p=document.getElementById(id);
+  if(p){p.classList.add('active');p.scrollTop=0;}
+}
+function setTab(id){
+  document.querySelectorAll('.tab').forEach(function(t){
+    t.classList.remove('active');
+    t.querySelector('i').style.color='var(--muted)';
+    t.querySelector('.tab-lbl').style.color='var(--muted)';
+  });
+  var t=document.getElementById(id);
+  if(t){
+    t.classList.add('active');
+    t.querySelector('i').style.color='var(--g)';
+    t.querySelector('.tab-lbl').style.color='var(--g)';
+  }
+}
+function goStep(n){
+  document.querySelectorAll('.spanel').forEach(function(p){p.classList.remove('active')});
+  document.querySelectorAll('.si').forEach(function(s,i){
+    s.classList.remove('active','done');
+    if(i+1<n)s.classList.add('done');
+    else if(i+1===n)s.classList.add('active');
+  });
+  var p=document.getElementById('step-'+n);
+  if(p)p.classList.add('active');
+  // sync summary when going to step 5
+  if(n===5){populateSummary();}
+  var sc=document.getElementById('step-scroll');
+  if(sc)sc.scrollTop=0;
+}
+
+// ── Sheets ──
+function openSheet(id){var e=document.getElementById(id);if(e)e.classList.add('open')}
+function closeSheet(id){var e=document.getElementById(id);if(e)e.classList.remove('open')}
+function closeSheetOut(e,id){if(e.target.id===id)closeSheet(id)}
+
+// ── Diamond Toggle ──
+function toggleDmd(){
+  S.dmdActive=!S.dmdActive;
+  var sec=document.getElementById('dmd-section');
+  var on=document.getElementById('dmd-on');
+  var off=document.getElementById('dmd-off');
+  var badge=document.getElementById('dmd-badge');
+  sec.style.display=S.dmdActive?'block':'none';
+  if(S.dmdActive){
+    on.style.cssText='padding:4px 10px;border-radius:16px;font-size:10px;font-weight:700;background:var(--dmd);color:#fff;cursor:pointer';
+    off.style.cssText='padding:4px 10px;border-radius:16px;font-size:10px;font-weight:700;color:rgba(107,127,212,0.4);cursor:pointer';
+    badge.style.display='inline';
+  }else{
+    on.style.cssText='padding:4px 10px;border-radius:16px;font-size:10px;font-weight:700;color:rgba(107,127,212,0.4);cursor:pointer';
+    off.style.cssText='padding:4px 10px;border-radius:16px;font-size:10px;font-weight:700;color:rgba(107,127,212,0.5);cursor:pointer';
+    badge.style.display='none';
+    S.dmdVal=0;
+  }
+  calcTotal();
+}
+// ── CS Toggle ──
+function toggleCS(){
+  S.csActive=!S.csActive;
+  var sec=document.getElementById('cs-section');
+  var on=document.getElementById('cs-on');
+  var off=document.getElementById('cs-off');
+  var badge=document.getElementById('cs-badge');
+  sec.style.display=S.csActive?'block':'none';
+  if(S.csActive){
+    on.style.cssText='padding:4px 10px;border-radius:16px;font-size:10px;font-weight:700;background:var(--cs);color:#fff;cursor:pointer';
+    off.style.cssText='padding:4px 10px;border-radius:16px;font-size:10px;font-weight:700;color:rgba(46,139,87,0.4);cursor:pointer';
+    badge.style.display='inline';
+  }else{
+    on.style.cssText='padding:4px 10px;border-radius:16px;font-size:10px;font-weight:700;color:rgba(46,139,87,0.4);cursor:pointer';
+    off.style.cssText='padding:4px 10px;border-radius:16px;font-size:10px;font-weight:700;color:rgba(46,139,87,0.5);cursor:pointer';
+    badge.style.display='none';
+    S.csVal=0;
+  }
+  calcTotal();
+}
+
+// ── Item Entry ──
+function selectItemType(t,btn){
+  document.querySelectorAll('.type-btn').forEach(function(b){b.classList.remove('active')});
+  btn.classList.add('active');
+  document.getElementById('barcode-sec').style.display=t==='barcode'?'block':'none';
+  document.getElementById('manual-sec').style.display=t==='manual'?'block':'none';
+}
+function simulateScan(){
+  document.getElementById('sku-inp').value='RJ-NS-003';
+  lookupSKU('RJ-NS-003');
+}
+function lookupSKU(v){
+  document.getElementById('sku-found-banner').style.display=v.toUpperCase()==='RJ-NS-003'?'block':'none';
+}
+function simulateScanStock(){
+  document.getElementById('scan-result').style.display='block';
+}
+
+// ── Main Calc ──
+function calcTotal(){
+  var nw=parseFloat(document.getElementById('net-wt').value)||0;
+  var gr=parseFloat(document.getElementById('gold-rate').value)||0;
+  var mc=parseFloat(document.getElementById('mc').value)||0;
+  var wst=parseFloat(document.getElementById('wastage').value)||0;
+  var hl=parseFloat(document.getElementById('hallmark').value)||0;
+  var goldVal=Math.round(nw*gr);
+  var wastageVal=Math.round(goldVal*wst/100);
+
+  var dmdTotal=0;
+  if(S.dmdActive){
+    var dw=parseFloat(document.getElementById('dmd-wt').value)||0;
+    var dr=parseFloat(document.getElementById('dmd-rate').value)||0;
+    var ds=parseFloat(document.getElementById('dmd-setting').value)||0;
+    var dv=Math.round(dw*dr);
+    dmdTotal=dv+ds;
+    S.dmdVal=dmdTotal;
+    document.getElementById('dmd-gem-val').textContent='₹'+dv.toLocaleString('en-IN');
+    document.getElementById('dmd-set-disp').textContent='₹'+ds.toLocaleString('en-IN');
+    document.getElementById('dmd-total-disp').textContent='₹'+dmdTotal.toLocaleString('en-IN');
+    document.getElementById('dmd-calc-box').style.display=(dv||ds)?'block':'none';
+    document.getElementById('it-dmd-row').style.display=dmdTotal?'flex':'none';
+    document.getElementById('it-dmd-val').textContent='₹'+dmdTotal.toLocaleString('en-IN');
+  }else{S.dmdVal=0;document.getElementById('it-dmd-row').style.display='none';}
+
+  var csTotal=0;
+  if(S.csActive){
+    var cw=parseFloat(document.getElementById('cs-wt').value)||0;
+    var cr=parseFloat(document.getElementById('cs-rate').value)||0;
+    var cs=parseFloat(document.getElementById('cs-setting').value)||0;
+    var cv=Math.round(cw*cr);
+    csTotal=cv+cs;
+    S.csVal=csTotal;
+    document.getElementById('cs-gem-val').textContent='₹'+cv.toLocaleString('en-IN');
+    document.getElementById('cs-set-disp').textContent='₹'+cs.toLocaleString('en-IN');
+    document.getElementById('cs-total-disp').textContent='₹'+csTotal.toLocaleString('en-IN');
+    document.getElementById('cs-calc-box').style.display=(cv||cs)?'block':'none';
+    document.getElementById('it-cs-row').style.display=csTotal?'flex':'none';
+    document.getElementById('it-cs-val').textContent='₹'+csTotal.toLocaleString('en-IN');
+  }else{S.csVal=0;document.getElementById('it-cs-row').style.display='none';}
+
+  var sub=goldVal+wastageVal+mc+hl+dmdTotal+csTotal;
+  var gst=Math.round(sub*0.03);
+  var total=sub+gst;
+
+  function fmt(v){return '₹'+v.toLocaleString('en-IN')}
+  document.getElementById('it-gold-val').textContent=fmt(goldVal);
+  document.getElementById('it-mc-val').textContent=fmt(mc+hl);
+  document.getElementById('it-waste-val').textContent=fmt(wastageVal);
+  document.getElementById('it-sub').textContent=fmt(sub);
+  document.getElementById('it-gst').textContent=fmt(gst);
+  document.getElementById('it-total-gst').textContent=fmt(total);
+  S.itemGST=total;
+  S.goldVal=goldVal; S.wastageVal=wastageVal; S.mc=mc+hl; S.sub=sub; S.gst=gst;
+  S.nw=nw; S.gr=gr; S.grossWt=parseFloat(document.getElementById('gross-wt').value)||0;
+  S.dmdTotalVal=dmdTotal; S.csTotalVal=csTotal;
+  document.getElementById('og-new-total').textContent=fmt(total);
+  calcOG();calcScheme();updateSummary();
+}
+
+// ── Old Gold ──
+function calcOG(){
+  var net=parseFloat(document.getElementById('og-net').value)||0;
+  var rate=parseFloat(document.getElementById('og-rate').value)||0;
+  var ogVal=Math.round(net*rate);
+  S.ogVal=ogVal;
+  document.getElementById('og-total-display').textContent='₹'+ogVal.toLocaleString('en-IN');
+  document.getElementById('og-deduct').textContent='- ₹'+ogVal.toLocaleString('en-IN');
+  var netPay=Math.max((S.itemGST||232883)-ogVal,0);
+  document.getElementById('og-net-payable').textContent='₹'+netPay.toLocaleString('en-IN');
+  updateSummary();
+}
+function toggleOG(v){
+  document.getElementById('og-yes').classList.toggle('sel',v);
+  document.getElementById('og-no').classList.toggle('sel',!v);
+  document.getElementById('og-section').style.display=v?'block':'none';
+  S.ogActive=v;if(v)calcOG();else{S.ogVal=0;updateSummary();}
+}
+
+// ── Scheme ──
+function toggleScheme(v){
+  document.getElementById('sch-yes').classList.toggle('sel',v);
+  document.getElementById('sch-no').classList.toggle('sel',!v);
+  document.getElementById('scheme-section').style.display=v?'block':'none';
+  S.schActive=v;if(v)calcScheme();else{S.schVal=0;updateSummary();}
+}
+function calcScheme(){
+  if(!S.schActive)return;
+  var months=parseFloat(document.getElementById('sch-months').value)||0;
+  var monthly=parseFloat(document.getElementById('sch-monthly').value)||0;
+  var benefit=parseFloat(document.getElementById('sch-benefit').value)||0;
+  var deposited=Math.round(months*monthly);
+  var schTotal=deposited+benefit;
+  S.schVal=schTotal;
+  function fmt(v){return '₹'+v.toLocaleString('en-IN')}
+  document.getElementById('sch-deposited').textContent=fmt(deposited);
+  document.getElementById('sch-benefit-val').textContent=fmt(benefit);
+  document.getElementById('sch-total-val').textContent=fmt(schTotal);
+  document.getElementById('sch-calc-box').style.display=schTotal>0?'block':'none';
+  updateSummary();
+}
+
+// ── Sales Return ──
+function toggleSalesReturn(v){
+  document.getElementById('sr-yes').classList.toggle('sel',v);
+  document.getElementById('sr-no').classList.toggle('sel',!v);
+  document.getElementById('salesreturn-section').style.display=v?'block':'none';
+  document.getElementById('s-sales-return-row').style.display=v?'block':'none';
+  S.srActive=v;
+}
+function calcSR(){
+  var origAmt=parseFloat(document.getElementById('sr-orig-amt').value)||0;
+  document.getElementById('sr-ret-amount').textContent='₹'+Math.round(origAmt).toLocaleString('en-IN');
+  S.srAmt=origAmt;updateSummary();
+}
+
+// ── Discount ──
+function calcFinal(){
+  var itemTot=S.itemGST||232883;
+  var og=S.ogActive?S.ogVal:0;
+  var sch=S.schActive?S.schVal:0;
+  var base=Math.max(itemTot-og-sch,0);
+  var dtype=document.getElementById('s-discount-type').value;
+  var dval=parseFloat(document.getElementById('s-discount-value').value)||0;
+  var damt=dtype==='percent'?Math.round(base*dval/100):Math.round(dval);
+  S.discountAmt=damt;
+  document.getElementById('discount-amt-preview').textContent='₹'+damt.toLocaleString('en-IN');
+  document.getElementById('discount-preview').style.display=damt>0?'flex':'none';
+  updateSummary();
+}
+
+// ── Update Summary ──
+function updateSummary(){
+  var itemTot=S.itemGST||232883;
+  var og=S.ogActive?S.ogVal:0;
+  var sch=S.schActive?S.schVal:0;
+  var disc=S.discountAmt||0;
+  var net=Math.max(itemTot-og-sch-disc,0);
+  var el=function(id){return document.getElementById(id)};
+  if(el('s-og-ded'))el('s-og-ded').textContent='₹'+og.toLocaleString('en-IN');
+  if(el('s-sch-ded'))el('s-sch-ded').textContent='₹'+sch.toLocaleString('en-IN');
+  if(el('s-discount-disp'))el('s-discount-disp').textContent='₹'+disc.toLocaleString('en-IN');
+  if(el('s-total'))el('s-total').textContent='₹'+net.toLocaleString('en-IN');
+  if(S.srActive&&el('s-net-after-ret')){
+    el('s-net-after-ret').textContent='₹'+Math.max(net-S.srAmt,0).toLocaleString('en-IN');
+  }
+}
+
+function populateSummary(){
+  var el=function(id,val){var e=document.getElementById(id);if(e)e.textContent=val};
+  var gross=document.getElementById('gross-wt')?document.getElementById('gross-wt').value:'35.50';
+  var net=document.getElementById('net-wt')?document.getElementById('net-wt').value:'32.00';
+  var rate=document.getElementById('gold-rate')?document.getElementById('gold-rate').value:'6800';
+  var mc=document.getElementById('mc')?document.getElementById('mc').value:'8500';
+  var purity=document.getElementById('item-purity')?document.getElementById('item-purity').value:'22K';
+  var cat=document.getElementById('item-cat')?document.getElementById('item-cat').value:'Necklace';
+  var iname=document.getElementById('item-name')&&document.getElementById('manual-sec').style.display!=='none'?document.getElementById('item-name').value:'Gold Necklace Set';
+  var sku=document.getElementById('sku-inp')?document.getElementById('sku-inp').value:'';
+  el('s-item-name',iname||sku||'Gold Necklace Set');
+  el('s-item-cat',cat);
+  el('s-item-purity',purity);
+  el('s-gross-wt',gross+' g');
+  el('s-wt',net+' g');
+  el('s-rate','₹'+parseFloat(rate).toLocaleString('en-IN')+'/g');
+  // gem blocks
+  var dEl=document.getElementById('s-dmd-block');
+  if(dEl)dEl.style.display=S.dmdActive&&S.dmdVal>0?'block':'none';
+  if(S.dmdActive&&S.dmdVal>0){
+    el('s-dmd-wt',(document.getElementById('dmd-wt').value||'0')+'ct');
+    el('s-dmd-total','₹'+S.dmdVal.toLocaleString('en-IN'));
+  }
+  var cEl=document.getElementById('s-cs-block');
+  if(cEl)cEl.style.display=S.csActive&&S.csVal>0?'block':'none';
+  if(S.csActive&&S.csVal>0){
+    el('s-cs-wt',(document.getElementById('cs-wt').value||'0')+'ct');
+    el('s-cs-total','₹'+S.csVal.toLocaleString('en-IN'));
+  }
+  // recalc display
+  calcTotal();
+  var fmt=function(v){return '₹'+v.toLocaleString('en-IN')};
+  el('s-gold',fmt(S.goldVal||0));
+  el('s-mc',fmt(S.mc||0));
+  el('s-waste',fmt(S.wastageVal||0));
+  el('s-sub',fmt(S.sub||0));
+  el('s-gst',fmt(S.gst||0));
+  updateSummary();
+}
+
+// ── Stock ──
+var stockData=[
+  {icon:'💍',name:'Diamond Ring',sku:'RJ-DR-001',purity:'18K',wt:'12.5',cat:'Ring',qty:12,status:'in'},
+  {icon:'📿',name:'Gold Necklace Set',sku:'RJ-NS-003',purity:'22K',wt:'35.0',cat:'Necklace',qty:8,status:'in'},
+  {icon:'🔗',name:'Gold Bracelet',sku:'RJ-GB-002',purity:'22K',wt:'18.0',cat:'Bangle',qty:3,status:'low'},
+  {icon:'💛',name:'Gold Bangles',sku:'RJ-BG-007',purity:'22K',wt:'44.5',cat:'Bangle',qty:6,status:'in'},
+  {icon:'💎',name:'Pearl Earrings',sku:'RJ-PE-004',purity:'Silver',wt:'6.0',cat:'Earring',qty:0,status:'out'},
+  {icon:'💒',name:'Wedding Ring',sku:'RJ-WR-005',purity:'22K',wt:'8.0',cat:'Ring',qty:5,status:'in'},
+  {icon:'✨',name:'Gold Chain',sku:'RJ-GC-006',purity:'22K',wt:'22.5',cat:'Necklace',qty:2,status:'low'},
+];
+var stockCatFilter='all';
+function buildStockList(filter){
+  var items=stockData.filter(function(s){
+    var q=(filter||'').toLowerCase();
+    var catOk=stockCatFilter==='all'||s.cat===stockCatFilter;
+    var searchOk=!q||s.name.toLowerCase().includes(q)||s.sku.toLowerCase().includes(q);
+    return catOk&&searchOk;
+  });
+  var html=items.map(function(s){
+    var badge=s.status==='in'?'<span class="badge b-green">In Stock</span>':s.status==='low'?'<span class="badge b-amber">Low Stock</span>':'<span class="badge b-red">Out of Stock</span>';
+    return '<div class="stock-item"><div class="stock-ico">'+s.icon+'</div><div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--dark)">'+s.name+'</div><div style="font-size:11px;color:var(--muted);margin-top:2px">'+s.sku+' · '+s.purity+' · '+s.wt+'g</div><div style="margin-top:5px">'+badge+'</div></div><div style="text-align:right"><div class="stock-num">'+s.qty+'</div><div class="stock-unit">pcs</div></div></div>';
+  }).join('');
+  document.getElementById('stock-list').innerHTML='<div class="card">'+html+'</div>';
+}
+function filterStock(v){buildStockList(v)}
+function filterStockCat(cat,el){
+  document.querySelectorAll('#p-stock .tag-pill').forEach(function(p){p.classList.remove('sel')});
+  el.classList.add('sel');
+  stockCatFilter=cat;
+  buildStockList(document.getElementById('stock-search').value);
+}
+
+// ── Scheme tabs ──
+function setSchTab(t){
+  ['plans','enrolled','payment'].forEach(function(x){
+    document.getElementById('sch-tab-'+x).classList.toggle('active',x===t);
+    document.getElementById('sch-panel-'+x).style.display=x===t?'block':'none';
+  });
+}
+function openEnrollSheet(name,amt,months){
+  document.getElementById('enroll-plan-name').textContent=name;
+  document.getElementById('enroll-plan-detail').textContent='₹'+parseInt(amt).toLocaleString('en-IN')+'/month · '+months+' months';
+  openSheet('sh-enroll');
+}
+function selEnrollPay(t){['cash','upi','neft'].forEach(function(x){document.getElementById('enroll-'+x).classList.toggle('sel',x===t)})}
+function confirmEnroll(){closeSheet('sh-enroll');showSuccess('Customer Enrolled!','Scheme enrollment saved. First payment collected.')}
+function selSchPay(t){['cash','upi','neft'].forEach(function(x){document.getElementById('schpay-'+x).classList.toggle('sel',x===t)})}
+function confirmSchemePayment(){closeSheet('sh-scheme-payment');showSuccess('Payment Collected!','₹5,000 collected for SCH-2024-0089.')}
+function lookupScheme(v){document.getElementById('scheme-found').style.display=v.toLowerCase().includes('sch')?'block':'none'}
+
+// ── Return / Exchange ──
+function openRetSheet(bill,cust,amt){
+  document.getElementById('re-cust').textContent=cust||'Customer';
+  document.getElementById('re-bill').textContent=bill||'';
+  var a=parseInt(amt)||0;
+  document.getElementById('re-amt').textContent='₹'+a.toLocaleString('en-IN');
+  document.getElementById('refund-disp').textContent='₹'+a.toLocaleString('en-IN');
+  document.getElementById('ex-ret-val').textContent='₹'+a.toLocaleString('en-IN');
+  S.retAmt=a;
+  selMode('return');
+  openSheet('sh-return');
+}
+function selMode(m){
+  document.getElementById('mode-return').classList.toggle('chosen',m==='return');
+  document.getElementById('mode-exchange').classList.toggle('chosen',m==='exchange');
+  document.getElementById('sh-ret-panel').style.display=m==='return'?'block':'none';
+  document.getElementById('sh-exch-panel').style.display=m==='exchange'?'block':'none';
+}
+function selPay(t){
+  ['cash','upi','neft'].forEach(function(x){document.getElementById('pay-'+x).classList.toggle('sel',x===t)});
+  document.getElementById('pay-upi-f').style.display=t==='upi'?'block':'none';
+  document.getElementById('pay-neft-f').style.display=t==='neft'?'block':'none';
+}
+function calcExch(){
+  var ret=S.retAmt||322845;
+  var wt=parseFloat(document.getElementById('ex-wt').value)||0;
+  var rate=parseFloat(document.getElementById('ex-rate').value)||0;
+  var mc=parseFloat(document.getElementById('ex-mc').value)||0;
+  var nv=Math.round(wt*rate+mc);
+  var gst=Math.round(nv*0.03);
+  var total=nv+gst;
+  document.getElementById('ex-new-val').textContent='₹'+nv.toLocaleString('en-IN');
+  document.getElementById('ex-gst').textContent='₹'+gst.toLocaleString('en-IN');
+  var diff=total-ret;
+  document.getElementById('ex-chip-pay').style.display=diff>0?'flex':'none';
+  document.getElementById('ex-chip-ref').style.display=diff<0?'flex':'none';
+  if(diff>0)document.getElementById('ex-cust-pays').textContent='₹'+diff.toLocaleString('en-IN');
+  if(diff<0)document.getElementById('ex-cust-refund').textContent='₹'+Math.abs(diff).toLocaleString('en-IN');
+}
+
+// ── Old Gold Buy ──
+function selOGBPay(t){
+  ['cash','upi','neft'].forEach(function(x){document.getElementById('ogb-'+x).classList.toggle('sel',x===t)});
+  document.getElementById('ogb-upi-f').style.display=t==='upi'?'block':'none';
+  document.getElementById('ogb-neft-f').style.display=t==='neft'?'block':'none';
+}
+function calcOGB(){
+  var nt=parseFloat(document.getElementById('ogb-nt').value)||0;
+  var mud=parseFloat(document.getElementById('ogb-mud').value)||0;
+  var rt=parseFloat(document.getElementById('ogb-rt').value)||0;
+  var gv=Math.round(Math.max(nt-mud,0)*rt);
+  document.getElementById('ogb-gval').textContent='₹'+gv.toLocaleString('en-IN');
+  document.getElementById('ogb-total').textContent='₹'+gv.toLocaleString('en-IN');
+}
+
+// ── Estimation filters ──
+function filterEst(status,el){
+  document.querySelectorAll('#p-estimations .tag-pill').forEach(function(p){p.classList.remove('sel')});
+  el.classList.add('sel');
+  document.querySelectorAll('.est-card').forEach(function(c){c.style.display=(status==='all'||c.dataset.status===status)?'block':'none'});
+}
+function closeEst(id){
+  var c=document.getElementById(id);if(!c)return;
+  c.dataset.status='closed';
+  var b=c.querySelector('.badge');if(b){b.className='badge b-green';b.textContent='Closed'}
+  var f=c.querySelector('.est-footer');
+  if(f)f.innerHTML='<button class="est-act" style="background:#FEF2F2;color:#991B1B;border:0.5px solid #FECACA">↩ Return</button><button class="est-act" style="background:#FFFBEB;color:#92400E;border:0.5px solid #FDE68A">↺ Reopen</button><button class="est-act" style="background:#F0F9FF;color:#1E40AF;border:0.5px solid #BFDBFE">🖨 Print</button>';
+}
+
+// ── Return Page ──
+function lookupBill(v){document.getElementById('ret-bill-found').style.display=v.toLowerCase().includes('inv-2025-003')?'block':'none'}
+function setRetTab(t){
+  document.getElementById('ret-tab-bill').classList.toggle('active',t==='bill');
+  document.getElementById('ret-tab-manual').classList.toggle('active',t==='manual');
+  document.getElementById('ret-panel-bill').style.display=t==='bill'?'block':'none';
+  document.getElementById('ret-panel-manual').style.display=t==='manual'?'block':'none';
+}
+function calcManualRet(){
+  var nw=parseFloat(document.getElementById('ret-net').value)||0;
+  var rt=parseFloat(document.getElementById('ret-rate').value)||0;
+  document.getElementById('ret-amt-disp').textContent='₹'+Math.round(nw*rt).toLocaleString('en-IN');
+}
+
+// ── More Details toggle ──
+function toggleMore(){
+  var s=document.getElementById('moreDetails');
+  var btn=document.getElementById('more-btn');
+  if(s.style.display==='none'){s.style.display='block';btn.textContent='− Less Details';}
+  else{s.style.display='none';btn.textContent='+ More Details';}
+}
+
+// ── Success ──
+function showSuccess(title,sub){
+  document.getElementById('success-title').textContent=title;
+  document.getElementById('success-sub').textContent=sub;
+  openSheet('sh-success');
+}
+function saveEstimateSuccess(){showSuccess('Estimation Saved!','EST-004 saved and ready to print.')}
+function confirmReturn(){closeSheet('sh-return');showSuccess('Return Processed!','Refund will be processed.')}
+function confirmExch(){closeSheet('sh-return');showSuccess('Exchange Done!','New item estimate created.')}
+function saveOGB(){closeSheet('sh-old-gold');showSuccess('Old Gold Saved!','Purchase entry recorded.')}
+</script>
+</body>
+</html>
